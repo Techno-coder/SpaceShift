@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../State.hpp"
-#include "../Tilemap.hpp"
+#include "../tilemap/Tilemap.hpp"
 
 class InGameState : public State {
 	Tilemap currentMap;

@@ -1,4 +1,5 @@
 #include "Tilemap.hpp"
+#include "../resource/GenericTextureProvider.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -9,21 +10,20 @@
 void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	int currentX = 0, currentY = 0;
 	for (const auto& row : tiles) {
-		sf::Vector2u lastTextureSize;
 		for (const auto& tile : row) {
 			sf::Sprite tileSprite;
-			tileSprite.setTexture(provider.getTexture(tile));
+			tileSprite.setTexture(provider->getTexture(tile));
 			tileSprite.setPosition(currentX, currentY);
 			target.draw(tileSprite);
-			lastTextureSize = tileSprite.getTexture()->getSize();
-			currentX += lastTextureSize.x;
+			currentX += TILE_WIDTH;
 		}
 		currentX = 0;
-		currentY += lastTextureSize.y;
+		currentY += TILE_HEIGHT;
 	}
 }
 
 void Tilemap::loadMap(const std::string& filePath) {
+	tiles.clear();
 	std::ifstream in(filePath);
 	if (!in.good()) return;
 	std::string lineString;
@@ -38,8 +38,8 @@ void Tilemap::loadMap(const std::string& filePath) {
 	}
 }
 
-void Tilemap::setTextureProvider(const TextureProvider& newProvider) {
-	provider = newProvider;
+void Tilemap::setTextureProvider(std::shared_ptr<TextureProvider> newProvider) {
+	provider = std::move(newProvider);
 }
 
-Tilemap::Tilemap() : provider(TextureProvider::empty()) {}
+Tilemap::Tilemap() : provider(std::make_shared<SimpleTextureProvider>()) {}
