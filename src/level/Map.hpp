@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Level.hpp"
+#include "../utility/Filepath.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -15,4 +16,6 @@ public:
 	 * @return True if the sprite is colliding with the tiles
 	 */
 	bool checkCollision(const sf::Sprite& sprite);
+
+	void loadMap(const Filepath& filepath);
 };

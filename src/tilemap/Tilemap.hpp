@@ -3,6 +3,7 @@
 #include "../level/Level.hpp"
 #include "../resource/Resource.hpp"
 #include "../resource/TextureProvider.hpp"
+#include "../utility/Filepath.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
 
@@ -17,7 +18,7 @@ protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 public:
 	Tilemap();
-	void loadMap(const std::string& filePath);
+	void loadMap(const Filepath& filePath);
 	void setTextureProvider(std::shared_ptr<TextureProvider> newProvider);
 };
 

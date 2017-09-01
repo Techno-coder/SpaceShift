@@ -8,6 +8,6 @@ class Filepath {
 	const std::string internal;
 public:
 	explicit Filepath(const std::string& filePath);
-	operator const std::string&();
+	operator const std::string&() const;
 };
 

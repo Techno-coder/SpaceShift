@@ -1,11 +1,9 @@
 #include "Tilemap.hpp"
 #include "../resource/GenericTextureProvider.hpp"
+#include "../utility/Tokeniser.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-
-#include <fstream>
-#include <sstream>
 
 void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	int currentX = 0, currentY = 0;
@@ -22,20 +20,9 @@ void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	}
 }
 
-void Tilemap::loadMap(const std::string& filePath) {
+void Tilemap::loadMap(const Filepath& filePath) {
 	tiles.clear();
-	std::ifstream in(filePath);
-	if (!in.good()) return;
-	std::string lineString;
-	while (std::getline(in, lineString)) {
-		std::istringstream line(lineString);
-		std::vector<ResourceID> lineTokens;
-		ResourceID tile;
-		while (line >> tile) {
-			lineTokens.emplace_back(tile);
-		}
-		tiles.push_back(lineTokens);
-	}
+	tiles = tokenise<ResourceID>(filePath);
 }
 
 void Tilemap::setTextureProvider(std::shared_ptr<TextureProvider> newProvider) {

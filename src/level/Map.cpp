@@ -5,3 +5,7 @@ bool Map::checkCollision(const sf::Sprite& sprite) {
 	auto y = static_cast<int>(sprite.getPosition().y / TILE_HEIGHT);
 	return collidableTiles[y][x];
 }
+
+void Map::loadMap(const Filepath& filepath) {
+
+}
