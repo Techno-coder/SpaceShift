@@ -6,9 +6,10 @@
 #include <string>
 
 class TextureResourceIDProvider {
+	ResourceID nextID = 0;
 	std::map<std::string, ResourceID> texturesIDs;
 public:
-	void setMapping(std::string stringID, ResourceID resourceID);
-	ResourceID getTextureID(std::string stringID);
+	ResourceID createNewMapping(const std::string& stringID);
+	ResourceID getTextureID(const std::string& stringID) const;
 };
 

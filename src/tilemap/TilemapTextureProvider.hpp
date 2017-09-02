@@ -9,7 +9,7 @@
 #include <string>
 
 class TilemapTextureProvider : public TextureProvider {
-	SimpleTextureProvider internal;
+	GenericTextureProvider internal;
 public:
 	void loadTexture(const Filepath& filePath, ResourceID resourceID, sf::Vector2i tilePosition);
 	const sf::Texture& getTexture(ResourceID resourceID) const override;

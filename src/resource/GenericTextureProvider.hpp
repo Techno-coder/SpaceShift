@@ -9,7 +9,7 @@
 #include <memory>
 #include <map>
 
-class SimpleTextureProvider : public TextureProvider {
+class GenericTextureProvider : public TextureProvider {
 	std::map<ResourceID, sf::Texture> textures;
 public:
 	void loadTexture(const Filepath& filePath, ResourceID resourceID, sf::IntRect textureRect);

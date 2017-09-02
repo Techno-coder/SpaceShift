@@ -13,5 +13,5 @@ void InGameState::update() {
 }
 
 void InGameState::draw(sf::RenderTarget& target) {
-	target.draw(currentMap);
+	target.draw(currentTileMap);
 }

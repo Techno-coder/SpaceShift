@@ -29,4 +29,4 @@ void Tilemap::setTextureProvider(std::shared_ptr<TextureProvider> newProvider) {
 	provider = std::move(newProvider);
 }
 
-Tilemap::Tilemap() : provider(std::make_shared<SimpleTextureProvider>()) {}
+Tilemap::Tilemap() : provider(std::make_shared<GenericTextureProvider>()) {}

@@ -1,9 +1,10 @@
 #include "TextureResourceIDProvider.hpp"
 
-void TextureResourceIDProvider::setMapping(std::string stringID, ResourceID resourceID) {
-	texturesIDs[stringID] = resourceID;
+ResourceID TextureResourceIDProvider::createNewMapping(const std::string& stringID) {
+	texturesIDs[stringID] = nextID++;
+	return texturesIDs[stringID];
 }
 
-ResourceID TextureResourceIDProvider::getTextureID(std::string stringID) {
-	return texturesIDs[stringID];
+ResourceID TextureResourceIDProvider::getTextureID(const std::string& stringID) const {
+	return texturesIDs.at(stringID);
 }
