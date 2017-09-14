@@ -1,14 +1,17 @@
 #pragma once
 
-#include "Filepath.hpp"
+#include "FilePath.hpp"
 
 #include <vector>
 #include <fstream>
 #include <sstream>
 
 template <typename T>
-std::vector<std::vector<T>> tokenise(const Filepath& filePath) {
-	std::vector<std::vector<T>> tokens;
+using MatrixVector = std::vector<std::vector<T>>;
+
+template <typename T>
+MatrixVector<T> tokenize(const FilePath& filePath) {
+	MatrixVector<T> tokens;
 	std::ifstream in(filePath);
 	if (!in.good()) return tokens;
 	std::string lineString;

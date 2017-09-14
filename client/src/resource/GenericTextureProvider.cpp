@@ -2,11 +2,11 @@
 
 static sf::Texture emptyTexture;
 
-void GenericTextureProvider::loadTexture(const Filepath& filePath, ResourceID resourceID) {
+void GenericTextureProvider::loadTexture(const FilePath& filePath, ResourceID resourceID) {
 	textures[resourceID].loadFromFile(filePath);
 }
 
-void GenericTextureProvider::loadTexture(const Filepath& filePath, ResourceID resourceID, sf::IntRect textureRect) {
+void GenericTextureProvider::loadTexture(const FilePath& filePath, ResourceID resourceID, sf::IntRect textureRect) {
 	textures[resourceID].loadFromFile(filePath, textureRect);
 }
 

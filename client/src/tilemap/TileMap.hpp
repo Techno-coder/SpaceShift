@@ -3,7 +3,8 @@
 #include "../level/Level.hpp"
 #include "../resource/Resource.hpp"
 #include "../resource/TextureProvider.hpp"
-#include "../utility/Filepath.hpp"
+#include "../utility/FilePath.hpp"
+#include "../utility/Tokeniser.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
 
@@ -11,14 +12,14 @@
 #include <string>
 #include <vector>
 
-class Tilemap : public sf::Drawable {
-	std::vector<std::vector<ResourceID>> tiles;
+class TileMap : public sf::Drawable {
+	MatrixVector<ResourceID> tiles;
 	std::shared_ptr<TextureProvider> provider;
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 public:
-	Tilemap();
-	void loadMap(const Filepath& filePath);
+	TileMap();
+	void loadMap(const FilePath& filePath);
 	void setTextureProvider(std::shared_ptr<TextureProvider> newProvider);
 };
 

@@ -3,7 +3,8 @@
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
     <sourceRoots>
-      <file path="$PROJECT_DIR$/src" />
+      <file path="$PROJECT_DIR$/client/src" />
+      <file path="$PROJECT_DIR$/server/src" />
     </sourceRoots>
   </component>
   <component name="RustProjectSettings">

@@ -1,14 +1,15 @@
 #pragma once
 
 #include "Level.hpp"
-#include "../utility/Filepath.hpp"
+#include "../utility/FilePath.hpp"
+#include "../utility/Tokeniser.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
 #include <vector>
 
 class Map {
-	std::vector<std::vector<bool>> collidableTiles;
+	MatrixVector<bool> collisionTiles;
 public:
 	/**
 	 * Checks whether a sprite is colliding with the tiles
@@ -17,5 +18,5 @@ public:
 	 */
 	bool checkCollision(const sf::Sprite& sprite);
 
-	void loadMap(const Filepath& filepath);
+	void loadMap(const FilePath& filePath);
 };

@@ -1,11 +1,11 @@
 #pragma once
 
 #include "../State.hpp"
-#include "../tilemap/Tilemap.hpp"
+#include "../tilemap/TileMap.hpp"
 #include "../level/Map.hpp"
 
 class InGameState : public State {
-	Tilemap currentTileMap;
+	TileMap currentTileMap;
 	Map currentMap;
 public:
 	void onEnter() override;
