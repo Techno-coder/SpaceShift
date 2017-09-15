@@ -1,4 +1,7 @@
 #include "Map.hpp"
+#include "../resource/GenericTextureProvider.hpp"
+
+#include <SFML/Graphics/RenderTarget.hpp>
 
 bool Map::checkCollision(const sf::Sprite& sprite) {
 	auto x = static_cast<int>(sprite.getPosition().x / TILE_WIDTH);
@@ -9,8 +12,10 @@ bool Map::checkCollision(const sf::Sprite& sprite) {
 
 void Map::loadMap(const FilePath& filePath) {
 	collisionTiles.clear();
-	auto details = tokenize<int>(filePath);
-	for (auto line : details) {
+	tiles.clear();
+	tiles = tokenize<ResourceID>(filePath);
+
+	for (const auto& line : tiles) {
 		std::vector<bool> temp;
 		temp.reserve(line.size());
 		for (auto tile : line) {
@@ -19,3 +24,24 @@ void Map::loadMap(const FilePath& filePath) {
 		collisionTiles.push_back(temp);
 	}
 }
+
+void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+	int currentX = 0, currentY = 0;
+	for (const auto& row : tiles) {
+		for (const auto& tile : row) {
+			sf::Sprite tileSprite;
+			tileSprite.setTexture(provider->getTexture(tile));
+			tileSprite.setPosition(currentX, currentY);
+			target.draw(tileSprite);
+			currentX += TILE_WIDTH;
+		}
+		currentX = 0;
+		currentY += TILE_HEIGHT;
+	}
+}
+
+void Map::setTextureProvider(std::shared_ptr<TextureProvider> newProvider) {
+	provider = std::move(newProvider);
+}
+
+Map::Map() : provider(std::make_shared<GenericTextureProvider>()) {}

@@ -2,15 +2,22 @@
 
 #include "Level.hpp"
 #include "../utility/FilePath.hpp"
-#include "../utility/Tokeniser.hpp"
+#include "../utility/Tokenizer.hpp"
+#include "../resource/TextureProvider.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
 #include <vector>
 
-class Map {
+class Map : public sf::Drawable {
 	MatrixVector<bool> collisionTiles;
+	MatrixVector<ResourceID> tiles;
+	std::shared_ptr<TextureProvider> provider;
+protected:
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 public:
+	Map();
+
 	/**
 	 * Checks whether a sprite is colliding with the tiles
 	 * @param sprite The sprite to check
@@ -19,4 +26,5 @@ public:
 	bool checkCollision(const sf::Sprite& sprite);
 
 	void loadMap(const FilePath& filePath);
+	void setTextureProvider(std::shared_ptr<TextureProvider> newProvider);
 };

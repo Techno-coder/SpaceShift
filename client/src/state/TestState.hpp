@@ -1,19 +1,19 @@
 #pragma once
 
 #include "../State.hpp"
-#include "../tilemap/TileMap.hpp"
-#include "../tilemap/TileMapTextureProvider.hpp"
+#include "../level/TileMapTextureProvider.hpp"
 #include "../level/Map.hpp"
 #include "../player/Player.hpp"
 #include "../resource/TextureResourceIDProvider.hpp"
+#include "../network/NetworkClient.hpp"
 
 class TestState : public State {
+	NetworkClient networkClient;
 	std::shared_ptr<TileMapTextureProvider> textureProvider = std::make_shared<TileMapTextureProvider>();
 	TextureResourceIDProvider playerTextureIDProvider;
 	GenericTextureProvider playerTextureProvider;
 	Player player;
 	Map map;
-	TileMap tileMap;
 	float posX = 0, posY = 0;
 
 	void handleKeyboardInput();

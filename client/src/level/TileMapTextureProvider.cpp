@@ -1,6 +1,6 @@
 #include "TileMapTextureProvider.hpp"
 
-#include "../level/Level.hpp"
+#include "Level.hpp"
 
 void
 TileMapTextureProvider::loadTexture(const FilePath& filePath, ResourceID resourceID, sf::Vector2i tilePosition) {

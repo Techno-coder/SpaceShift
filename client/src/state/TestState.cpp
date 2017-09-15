@@ -17,7 +17,7 @@ void TestState::draw(sf::RenderTarget& target) {
 	view.zoom(0.2);
 	target.setView(view);
 
-	target.draw(tileMap);
+	target.draw(map);
 	target.draw(player.getSprite());
 }
 
@@ -33,28 +33,32 @@ void TestState::onEnter() {
 	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 8, sf::Vector2i(32, 64));
 	playerTextureProvider.loadTexture(FilePath("dungeon_tiles.png"), playerTextureIDProvider.createNewMapping("GREEN"),
 	                                  sf::IntRect(197, 160, 16, 20));
-	tileMap.setTextureProvider(textureProvider);
-	tileMap.loadMap(FilePath("testMap.txt"));
+	map.setTextureProvider(textureProvider);
 	map.loadMap(FilePath("testMap.txt"));
 	player.move(20, 20);
 	player.setPlayerTexture(playerTextureProvider.getTexture(playerTextureIDProvider.getTextureID("GREEN")));
+
+	if (!networkClient.openConnection(sf::IpAddress::LocalHost, 54000)) { // TODO Temporary port
+		printf("Error occurred.");
+	}
+
 }
 
 void TestState::handleKeyboardInput() {
 	constexpr int moveSpeed = 3;
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		player.move(0, -moveSpeed);
 		if (map.checkCollision(player.getSprite())) player.move(0, moveSpeed);
 	}
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 		player.move(0, moveSpeed);
 		if (map.checkCollision(player.getSprite())) player.move(0, -moveSpeed);
 	}
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		player.move(-moveSpeed, 0);
 		if (map.checkCollision(player.getSprite())) player.move(moveSpeed, 0);
 	}
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		player.move(moveSpeed, 0);
 		if (map.checkCollision(player.getSprite())) player.move(-moveSpeed, 0);
 	}

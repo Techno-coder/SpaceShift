@@ -7,6 +7,10 @@ FILE(GLOB_RECURSE SOURCE_FILES
 		src/*.hpp
 		src/*.cpp)
 
+FILE(GLOB_RECURSE SHARED_FILES
+		../shared/*.hpp
+		../shared/*.cpp)
+
 if (APPLE)
 	set(CMAKE_CXX_COMPILER_ID AppleClang)
 endif ()
@@ -22,7 +26,7 @@ include(${CMAKE_CURRENT_BINARY_DIR}/conan.cmake)
 conan_cmake_run(REQUIRES sfml/2.4.0@diego_stamigni/stable BASIC_SETUP BUILD missing)
 
 include_directories(${CONAN_INCLUDE_DIRS})
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${SHARED_FILES})
 target_link_libraries(${PROJECT_NAME} sfml-system sfml-audio sfml-window sfml-graphics sfml-network)
 
 file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
