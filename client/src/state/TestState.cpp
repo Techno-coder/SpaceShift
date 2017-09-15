@@ -1,4 +1,5 @@
 #include "TestState.hpp"
+#include "../../../shared/packets/server/MapChangeEvent.hpp"
 
 void TestState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
 	switch (event.type) {
@@ -11,6 +12,16 @@ void TestState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
 
 void TestState::update() {
 	handleKeyboardInput();
+	if (networkClient.receiveNewPacket()) {
+		printf("New packet received");
+		ServerPacketWrapper newPacket = networkClient.getRecentPacket();
+		if (newPacket.type == ServerPacketWrapper::Type::MAP_CHANGE_EVENT) {
+			printf("MAP_CHANGE_EVENT packet received");
+			MapChangeEventPacket mapChangeEventPacket;
+			mapChangeEventPacket.parsePacket(newPacket.internal);
+			map.loadMap(tokenize<ResourceID>(mapChangeEventPacket.serializedMapData));
+		}
+	}
 }
 
 void TestState::draw(sf::RenderTarget& target) {
@@ -36,11 +47,11 @@ void TestState::onEnter() {
 	playerTextureProvider.loadTexture(FilePath("dungeon_tiles.png"), playerTextureIDProvider.createNewMapping("GREEN"),
 	                                  sf::IntRect(197, 160, 16, 20));
 	map.setTextureProvider(textureProvider);
-	map.loadMap(FilePath("testMap.txt"));
+	map.loadMap(tokenize<ResourceID>(FilePath("testMap.txt")));
 	player.move(20, 20);
 	player.setPlayerTexture(playerTextureProvider.getTexture(playerTextureIDProvider.getTextureID("GREEN")));
 
-//	networkClient.openConnection("104.236.99.58", 54000);
+//	networkClient.openConnection("104.236.159.163", 54000);
 	if (networkClient.openConnection(sf::IpAddress::LocalHost, 54000)) printf("Connection successful\n"); //TODO Change to server address
 	else printf("Unable to connect");
 }

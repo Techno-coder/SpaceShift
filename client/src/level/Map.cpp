@@ -10,10 +10,10 @@ bool Map::checkCollision(const sf::Sprite& sprite) {
 	return collisionTiles[y][x];
 }
 
-void Map::loadMap(const FilePath& filePath) {
+void Map::loadMap(MatrixVector<ResourceID> newMap) {
 	collisionTiles.clear();
 	tiles.clear();
-	tiles = tokenize<ResourceID>(filePath);
+	tiles = std::move(newMap);
 
 	for (const auto& line : tiles) {
 		std::vector<bool> temp;

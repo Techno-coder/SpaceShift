@@ -1,16 +1,20 @@
 #pragma once
 
-#include "../Packet.hpp"
+#include "../../ServerPacket.hpp"
 
-struct HandshakeResponsePacket : public Packet {
+struct LoginResponsePacket : public ServerPacket {
 	enum class Response : sf::Uint8 {
 		SUCCESSFUL = 0,
-		CLIENT_OUTDATED = 1
+		INVALID = 1
 	} response = Response::SUCCESSFUL;
+
+	ServerPacketWrapper::Type getType() const override {
+		return ServerPacketWrapper::Type::LOGIN_RESPONSE;
+	}
 
 	sf::Packet generatePacket() const override {
 		sf::Packet packet;
-		return packet << static_cast<sf::Uint8>(response);
+		return packet << response;
 	}
 
 	void parsePacket(sf::Packet& packet) override {

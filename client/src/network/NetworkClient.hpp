@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../../../shared/Packet.hpp"
+#include "../../../shared/ClientPacket.hpp"
+#include "../../../shared/ServerPacketWrapper.hpp"
 
 #include <SFML/Network/UdpSocket.hpp>
 #include <SFML/Network/Packet.hpp>
@@ -25,7 +26,7 @@ public:
 	bool openConnection(sf::IpAddress address, unsigned short port);
 
 	sf::Socket::Status sendPacket(sf::Packet packet);
-	sf::Socket::Status sendPacket(const Packet& packet);
+	sf::Socket::Status sendPacket(const ClientPacket& packet);
 
 	/**
 	 * Attempts to receive a new packet
@@ -33,9 +34,9 @@ public:
 	 */
 	bool receiveNewPacket();
 	/**
-	 * Gets the most recent packet received
+	 * Gets the most recent packet received and parses it
 	 * @return The most recent packet
 	 */
-	sf::Packet getRecentPacket();
+	ServerPacketWrapper getRecentPacket();
 };
 

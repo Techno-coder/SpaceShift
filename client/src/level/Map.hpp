@@ -25,6 +25,6 @@ public:
 	 */
 	bool checkCollision(const sf::Sprite& sprite);
 
-	void loadMap(const FilePath& filePath);
+	void loadMap(MatrixVector<ResourceID> newMap);
 	void setTextureProvider(std::shared_ptr<TextureProvider> newProvider);
 };

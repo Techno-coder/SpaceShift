@@ -10,12 +10,10 @@ template <typename T>
 using MatrixVector = std::vector<std::vector<T>>;
 
 template <typename T>
-MatrixVector<T> tokenize(const FilePath& filePath) {
+MatrixVector<T> tokenize(std::basic_istream<char>& str) {
 	MatrixVector<T> tokens;
-	std::ifstream in(filePath);
-	if (!in.good()) return tokens;
 	std::string lineString;
-	while (std::getline(in, lineString)) {
+	while (std::getline(str, lineString)) {
 		std::istringstream line(lineString);
 		std::vector<T> lineTokens;
 		T token;
@@ -25,4 +23,18 @@ MatrixVector<T> tokenize(const FilePath& filePath) {
 		tokens.push_back(lineTokens);
 	}
 	return tokens;
+}
+
+template <typename T>
+MatrixVector<T> tokenize(const std::string& str) {
+	std::istringstream all(str);
+	return tokenize<T>(all);
+}
+
+template <typename T>
+MatrixVector<T> tokenize(const FilePath& filePath) {
+	MatrixVector<T> tokens;
+	std::ifstream in(filePath);
+	if (!in.good()) return tokens;
+	return tokenize<T>(in);
 }
