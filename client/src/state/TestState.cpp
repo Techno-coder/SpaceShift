@@ -2,6 +2,8 @@
 
 void TestState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
 	switch (event.type) {
+		case sf::Event::KeyPressed:
+			break;
 		default:
 			break;
 	}
@@ -38,10 +40,9 @@ void TestState::onEnter() {
 	player.move(20, 20);
 	player.setPlayerTexture(playerTextureProvider.getTexture(playerTextureIDProvider.getTextureID("GREEN")));
 
-	if (!networkClient.openConnection(sf::IpAddress::LocalHost, 54000)) { // TODO Temporary port
-		printf("Error occurred.");
-	}
-
+//	networkClient.openConnection("104.236.99.58", 54000);
+	if (networkClient.openConnection(sf::IpAddress::LocalHost, 54000)) printf("Connection successful\n"); //TODO Change to server address
+	else printf("Unable to connect");
 }
 
 void TestState::handleKeyboardInput() {

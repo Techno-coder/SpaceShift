@@ -9,6 +9,8 @@ class NetworkClient {
 	sf::UdpSocket socket;
 	sf::IpAddress serverAddress;
 	unsigned short serverPort;
+
+	sf::Packet nextPacket;
 public:
 	/**
 	 * Closes the current connection if one exists
@@ -24,5 +26,16 @@ public:
 
 	sf::Socket::Status sendPacket(sf::Packet packet);
 	sf::Socket::Status sendPacket(const Packet& packet);
+
+	/**
+	 * Attempts to receive a new packet
+	 * @return True if a new packet was received
+	 */
+	bool receiveNewPacket();
+	/**
+	 * Gets the most recent packet received
+	 * @return The most recent packet
+	 */
+	sf::Packet getRecentPacket();
 };
 
