@@ -1,0 +1,15 @@
+#include "GameManager.hpp"
+
+bool GameManager::isInGame(PlayerID playerID) {
+	return inGamePlayers.count(playerID) != 0;
+}
+
+Game& GameManager::getGamePlayerIsIn(PlayerID playerID) {
+	return *games[inGamePlayers[playerID]];
+}
+
+GameManager::GameManager(std::shared_ptr<NetworkManager> networkManager) : networkManager(networkManager) {}
+
+void GameManager::onTick() {
+	for (auto& pair : games) pair.second->onTick();
+}

@@ -2,7 +2,7 @@
 
 #include "Resource.hpp"
 #include "TextureProvider.hpp"
-#include "../utility/FilePath.hpp"
+#include "../../../shared/utility/FilePath.hpp"
 
 #include <SFML/Graphics/Texture.hpp>
 

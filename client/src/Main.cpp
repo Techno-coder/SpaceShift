@@ -17,11 +17,11 @@ int main() {
 	while (window.isOpen()) {
 		sf::Event event{};
 		while (window.pollEvent(event)) {
+			stateManager.handleEvent(event, window);
 			if (event.type == sf::Event::Closed) {
 				window.close();
 				return 0;
 			}
-			stateManager.handleEvent(event, window);
 		}
 		while (accumulator > ups) {
 			accumulator -= ups;

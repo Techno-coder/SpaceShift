@@ -18,7 +18,7 @@ public:
 	 */
 	void closeConnection();
 	/**
-	 * Closes existing connection and attempts to handshake with the server and start a connection
+	 * Attempts to handshake with the server and start a connection
 	 * @param address The address of the server
 	 * @param port The port that the server is listening on
 	 * @return False if the handshake was unsuccessful

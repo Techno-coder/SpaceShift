@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Level.hpp"
-#include "../utility/FilePath.hpp"
-#include "../utility/Tokenizer.hpp"
+#include "../../../shared/utility/FilePath.hpp"
+#include "../../../shared/utility/Tokenizer.hpp"
 #include "../resource/TextureProvider.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>

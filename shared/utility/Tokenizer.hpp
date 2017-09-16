@@ -1,13 +1,10 @@
 #pragma once
 
 #include "FilePath.hpp"
+#include "MatrixVector.hpp"
 
-#include <vector>
 #include <fstream>
 #include <sstream>
-
-template <typename T>
-using MatrixVector = std::vector<std::vector<T>>;
 
 template <typename T>
 MatrixVector<T> tokenize(std::basic_istream<char>& str) {

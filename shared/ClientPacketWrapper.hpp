@@ -6,7 +6,8 @@ class ClientPacketWrapper : public PacketWrapper {
 public:
 	enum class Type : sf::Uint16 {
 		DISCONNECT = 0,
-		LOGIN_REQUEST = 1
+		AUTHENTICATION_REQUEST = 1,
+		MOVE_REQUEST = 2
 	} type = Type::DISCONNECT;
 
 private:

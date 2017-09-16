@@ -2,14 +2,14 @@
 
 #include "../../ServerPacket.hpp"
 
-struct LoginResponsePacket : public ServerPacket {
+struct AuthenticationResponsePacket : public ServerPacket {
 	enum class Response : sf::Uint8 {
 		SUCCESSFUL = 0,
 		INVALID = 1
 	} response = Response::SUCCESSFUL;
 
 	ServerPacketWrapper::Type getType() const override {
-		return ServerPacketWrapper::Type::LOGIN_RESPONSE;
+		return ServerPacketWrapper::Type::AUTHENTICATION_RESPONSE;
 	}
 
 	sf::Packet generatePacket() const override {

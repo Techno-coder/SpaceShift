@@ -1,8 +1,12 @@
 #include "TestState.hpp"
 #include "../../../shared/packets/server/MapChangeEvent.hpp"
+#include "../../../shared/packets/client/PlayerMoveRequest.hpp"
 
 void TestState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
 	switch (event.type) {
+		case sf::Event::Closed:
+			networkClient.closeConnection();
+			break;
 		case sf::Event::KeyPressed:
 			break;
 		default:
@@ -13,14 +17,22 @@ void TestState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
 void TestState::update() {
 	handleKeyboardInput();
 	if (networkClient.receiveNewPacket()) {
-		printf("New packet received");
 		ServerPacketWrapper newPacket = networkClient.getRecentPacket();
 		if (newPacket.type == ServerPacketWrapper::Type::MAP_CHANGE_EVENT) {
-			printf("MAP_CHANGE_EVENT packet received");
+			printf("MAP_CHANGE_EVENT packet received\n");
 			MapChangeEventPacket mapChangeEventPacket;
 			mapChangeEventPacket.parsePacket(newPacket.internal);
 			map.loadMap(tokenize<ResourceID>(mapChangeEventPacket.serializedMapData));
 		}
+	}
+	currentTime += networkClock.restart();
+	if (currentTime > sf::milliseconds(100)) {
+		printf("Move request packet sent\n");
+		PlayerMoveRequestPacket moveRequestPacket;
+		moveRequestPacket.newPositionX = static_cast<int>(posX);
+		moveRequestPacket.newPositionY = static_cast<int>(posY);
+		networkClient.sendPacket(moveRequestPacket);
+		currentTime = sf::Time::Zero;
 	}
 }
 
@@ -52,7 +64,8 @@ void TestState::onEnter() {
 	player.setPlayerTexture(playerTextureProvider.getTexture(playerTextureIDProvider.getTextureID("GREEN")));
 
 //	networkClient.openConnection("104.236.159.163", 54000);
-	if (networkClient.openConnection(sf::IpAddress::LocalHost, 54000)) printf("Connection successful\n"); //TODO Change to server address
+	if (networkClient.openConnection(sf::IpAddress::LocalHost, 54000))
+		printf("Connection successful\n"); //TODO Change to server address
 	else printf("Unable to connect");
 }
 

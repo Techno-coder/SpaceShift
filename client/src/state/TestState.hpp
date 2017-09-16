@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/System/Clock.hpp>
 #include "../State.hpp"
 #include "../level/TileMapTextureProvider.hpp"
 #include "../level/Map.hpp"
@@ -16,6 +17,8 @@ class TestState : public State {
 	Map map;
 	float posX = 0, posY = 0;
 
+	sf::Clock networkClock;
+	sf::Time currentTime = sf::Time::Zero;
 	void handleKeyboardInput();
 public:
 	void onEnter() override;

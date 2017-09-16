@@ -7,7 +7,6 @@
 #include "../../../shared/packets/client/DisconnectNotify.hpp"
 
 bool NetworkClient::openConnection(sf::IpAddress address, unsigned short port) {
-	closeConnection();
 	serverAddress = address;
 	serverPort = port;
 	socket.bind(port);
@@ -32,8 +31,8 @@ bool NetworkClient::openConnection(sf::IpAddress address, unsigned short port) {
 }
 
 void NetworkClient::closeConnection() {
-//	DisconnectNotifyPacket disconnectNotifyPacket;
-//	sendPacket(disconnectNotifyPacket);
+	DisconnectNotifyPacket disconnectNotifyPacket;
+	sendPacket(disconnectNotifyPacket);
 	socket.unbind();
 }
 

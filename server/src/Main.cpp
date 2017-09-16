@@ -1,62 +1,33 @@
+#include "Constants.hpp"
+
 #include "../../shared/packets/HandshakeResponse.hpp"
-#include "../../shared/packets/HandshakeRequest.hpp"
-#include "../../shared/packets/server/MapChangeEvent.hpp"
+#include "Game.hpp"
+
+#include <SFML/Network/UdpSocket.hpp>
+#include <SFML/System/Clock.hpp>
 
 #include <iostream>
 
-#include <SFML/Network/UdpSocket.hpp>
-#include <set>
-#include <SFML/System/Clock.hpp>
-
-sf::Socket::Status sendPacket(sf::UdpSocket& socket, sf::Packet packet, sf::IpAddress address, unsigned short port) {
-//	return socket.send(packet, address, port);
-	return socket.send(packet, address, 54000); // TODO Change when not in debug mode
-}
-
 int main() {
-	unsigned short port;
-	std::cout << "Please specify a port to bind to: " << std::endl;
-	std::cin >> port;
+	std::shared_ptr<sf::UdpSocket> socket = std::make_shared<sf::UdpSocket>();
+	if (socket->bind(SERVER_PORT) != sf::Socket::Done) return 1;
+	socket->setBlocking(false);
 
-	sf::UdpSocket socket;
-	if (socket.bind(port) != sf::Socket::Done) return 1;
+	std::shared_ptr<NetworkManager> networkManager;
+	std::shared_ptr<GameManager> gameManager = std::make_shared<GameManager>(networkManager);
+	networkManager = std::make_shared<NetworkManager>(gameManager, socket);
 
-	sf::IpAddress ipAddress;
-	sf::Packet packet;
-
+	sf::Clock clock;
+	sf::Time currentTime = sf::Time::Zero;
 	while (true) {
-		socket.receive(packet, ipAddress, port);
-		HandshakeRequestPacket requestPacket;
-		requestPacket.parsePacket(packet);
+		unsigned short port;
+		sf::IpAddress ipAddress;
+		sf::Packet packet;
+		if (socket->receive(packet, ipAddress, port) == sf::Socket::Done)
+			networkManager->handlePacket(packet, ipAddress);
 
-		std::cout << "Handshake received" << std::endl;
-
-		HandshakeResponsePacket responsePacket;
-		responsePacket.response = HandshakeResponsePacket::Response::SUCCESSFUL;
-		sendPacket(socket, responsePacket.generatePacket(), ipAddress, port);
-
-		std::cout << "Response packet sent" << std::endl;
-
-		sf::Clock clock;
-		sf::Time elapsed = sf::Time::Zero;
-		while (elapsed < sf::seconds(5)) {
-			elapsed += clock.restart();
-		}
-
-		std::cout << "Clock finished" << std::endl;
-
-		std::string mapData = "1 2 2 2 3\n8 1 1 1 7 2 2 2 3\n8 0 0 0 0 0 0 0 4\n8 0 0 0 1 6 6 6 5\n7 6 6 6 5";
-
-		MapChangeEventPacket mapChangeEventPacket;
-		mapChangeEventPacket.serializedMapData = mapData;
-
-		ServerPacketWrapper packetWrapper;
-		packetWrapper.internal = mapChangeEventPacket.generatePacket();
-		packetWrapper.type = ServerPacketWrapper::Type::MAP_CHANGE_EVENT;
-
-		sendPacket(socket, packetWrapper.generatePacket(), ipAddress, port);
-		std::cout << "MAP_CHANGE_EVENT pack sent" << std::endl;
+		if (currentTime >= TICK_SPEED) gameManager->onTick();
+		currentTime += clock.restart();
 	}
-
 	return 0;
 }
