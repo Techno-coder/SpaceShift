@@ -4,11 +4,11 @@
 #include "GameManager.hpp"
 #include "../../shared/utility/DoubleMap.hpp"
 #include "../../shared/Packet.hpp"
-#include "../../shared/ClientPacketWrapper.hpp"
-#include "../../shared/ServerPacket.hpp"
 
 #include <SFML/Network/IpAddress.hpp>
 #include <map>
+
+class ServerPacket;
 
 class GameManager;
 
@@ -30,8 +30,8 @@ class NetworkManager {
 	std::shared_ptr<sf::UdpSocket> socket;
 	std::shared_ptr<GameManager> gameManager;
 
-	void sendPacket(sf::Packet packet, sf::IpAddress address);
-	void sendPacket(const ServerPacket& packet, PlayerID playerID);
+	void sendPacket(sf::Packet packet, const sf::IpAddress& address);
+	void sendPacket(const ServerPacket& packet, const PlayerID& playerID);
 
 	void handleHandshake(sf::Packet& packet, sf::IpAddress address);
 	void handleDisconnect(PlayerID playerID);
@@ -40,6 +40,6 @@ public:
 	NetworkManager(std::shared_ptr<GameManager> gameManager, std::shared_ptr<sf::UdpSocket> socket);
 
 	void onTick();
-	void handlePacket(sf::Packet& packet, sf::IpAddress address);
+	void handlePacket(sf::Packet& packet, const sf::IpAddress& address);
 };
 

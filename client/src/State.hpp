@@ -1,7 +1,10 @@
 #pragma once
 
-#include <SFML/Graphics/RenderTarget.hpp>
-#include <SFML/Window/Event.hpp>
+namespace sf {
+	class Event;
+
+	class RenderTarget;
+}
 
 class State {
 public:

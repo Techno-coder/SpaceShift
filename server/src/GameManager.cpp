@@ -1,7 +1,5 @@
 #include "GameManager.hpp"
 
-#include <utility>
-
 bool GameManager::isInGame(PlayerID playerID) {
 	return inGamePlayers.count(playerID) != 0;
 }

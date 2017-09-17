@@ -1,7 +1,5 @@
 #include "Constants.hpp"
-
-#include "../../shared/packets/HandshakeResponse.hpp"
-#include "Game.hpp"
+#include "GameManager.hpp"
 
 #include <SFML/Network/UdpSocket.hpp>
 #include <SFML/System/Clock.hpp>

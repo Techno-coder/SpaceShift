@@ -1,15 +1,15 @@
 #pragma once
 
 #include "Constants.hpp"
-#include "NetworkManager.hpp"
 
 #include "../../shared/utility/MatrixVector.hpp"
 #include "../../shared/player/PlayerEntity.hpp"
-#include "../../shared/ClientPacketWrapper.hpp"
 
 #include <map>
 
 typedef int TileID;
+
+class ClientPacketWrapper;
 
 class NetworkManager;
 
@@ -19,8 +19,8 @@ class Game {
 
 	std::shared_ptr<NetworkManager> networkManager;
 public:
-	Game(std::shared_ptr<NetworkManager> networkManager);
+	explicit Game(std::shared_ptr<NetworkManager> networkManager);
 
 	void onTick();
-	void handlePacket(ClientPacketWrapper packetWrapper, PlayerID playerID);
+	void handlePacket(const ClientPacketWrapper& packetWrapper, PlayerID playerID);
 };

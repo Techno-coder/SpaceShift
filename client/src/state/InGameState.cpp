@@ -1,5 +1,7 @@
 #include "InGameState.hpp"
 
+#include <SFML/Graphics/RenderTarget.hpp>
+
 void InGameState::onEnter() {
 
 }

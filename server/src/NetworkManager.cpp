@@ -6,7 +6,7 @@
 
 #include <SFML/Network/UdpSocket.hpp>
 
-void NetworkManager::handlePacket(sf::Packet& packet, sf::IpAddress address) {
+void NetworkManager::handlePacket(sf::Packet& packet, const sf::IpAddress& address) {
 	if (!playerIPs.exists(address)) handleHandshake(packet, address);
 	ClientPacketWrapper packetWrapper;
 	packetWrapper.parsePacket(packet);
@@ -34,7 +34,7 @@ void NetworkManager::handleHandshake(sf::Packet& packet, sf::IpAddress address) 
 	sendPacket(responsePacket.generatePacket(), address);
 }
 
-void NetworkManager::sendPacket(sf::Packet packet, sf::IpAddress address) {
+void NetworkManager::sendPacket(sf::Packet packet, const sf::IpAddress& address) {
 //	socket->send(packet, address, SERVER_PORT);
 	socket->send(packet, address, SERVER_PORT - 1); //TODO DEBUG ONLY!!
 }
@@ -87,7 +87,7 @@ void NetworkManager::onTick() {
 	}
 }
 
-void NetworkManager::sendPacket(const ServerPacket& packet, PlayerID playerID) {
+void NetworkManager::sendPacket(const ServerPacket& packet, const PlayerID& playerID) {
 	ServerPacketWrapper packetWrapper;
 	packetWrapper.type = packet.getType();
 	packetWrapper.internal = packet.generatePacket();

@@ -10,10 +10,12 @@ class TitleScreenState : public State {
 		void onMouseMove(int xPosition, int yPosition) {
 			login.onMouseMove(xPosition, yPosition);
 		}
+
 		void onMouseClick() {
 			login.onMouseClick();
 		}
 	} buttons;
+
 public:
 	TitleScreenState();
 	void onEnter() override;

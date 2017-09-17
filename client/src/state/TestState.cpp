@@ -2,6 +2,11 @@
 #include "../../../shared/packets/server/MapChangeEvent.hpp"
 #include "../../../shared/packets/client/PlayerMoveRequest.hpp"
 #include "../resource/ResourceLoaders.hpp"
+#include "../../../shared/utility/Tokenizer.hpp"
+
+#include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/View.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 void TestState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
 	switch (event.type) {
@@ -59,7 +64,7 @@ void TestState::onEnter() {
 	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 8, sf::Vector2i(32, 64));
 	playerTextureProvider.storeResource(
 			loadTextureFromPath(FilePath("dungeon_tiles.png"), sf::IntRect(197, 160, 16, 20)),
-	                                    playerTextureIDProvider.createNewMapping("GREEN"));
+			playerTextureIDProvider.createNewMapping("GREEN"));
 
 	map.setTextureProvider(textureProvider);
 	map.loadMap(tokenize<ResourceID>(FilePath("testMap.txt")));
@@ -92,4 +97,8 @@ void TestState::handleKeyboardInput() {
 	}
 	posX = player.getSprite().getPosition().x;
 	posY = player.getSprite().getPosition().y;
+}
+
+TestState::TestState() : textureProvider(std::make_shared<TileMapTextureProvider>()) {
+
 }

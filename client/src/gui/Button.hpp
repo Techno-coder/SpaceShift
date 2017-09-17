@@ -9,8 +9,8 @@ class Button : public sf::Drawable {
 	sf::Rect<int> rect{};
 	bool isHovering = false;
 
-	ButtonCallback onHover = [](){};
-	ButtonCallback onClick = [](){};
+	ButtonCallback onHover = []() {};
+	ButtonCallback onClick = []() {};
 
 	void updateTextPosition();
 public:

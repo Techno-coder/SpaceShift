@@ -2,11 +2,12 @@
 
 #include "../resource/Resource.hpp"
 #include "../resource/GenericResourceProvider.hpp"
-#include "../../../shared/utility/FilePath.hpp"
 
-#include <SFML/Graphics/Texture.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include <string>
+
+class FilePath;
 
 class TileMapTextureProvider : public ResourceProvider<sf::Texture> {
 	GenericResourceProvider<sf::Texture> internal;

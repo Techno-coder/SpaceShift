@@ -1,10 +1,11 @@
 #pragma once
 
-#include "../../../shared/ClientPacket.hpp"
 #include "../../../shared/ServerPacketWrapper.hpp"
 
 #include <SFML/Network/UdpSocket.hpp>
 #include <SFML/Network/Packet.hpp>
+
+class ClientPacket;
 
 class NetworkClient {
 	sf::UdpSocket socket;

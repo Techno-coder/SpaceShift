@@ -1,13 +1,22 @@
 #pragma once
 
 #include "Level.hpp"
-#include "../../../shared/utility/FilePath.hpp"
-#include "../../../shared/utility/Tokenizer.hpp"
-#include "../resource/ResourceProvider.hpp"
+#include "../resource/Resource.hpp"
+#include "../../../shared/utility/MatrixVector.hpp"
 
-#include <SFML/Graphics/Sprite.hpp>
-
+#include <SFML/Graphics/Drawable.hpp>
 #include <vector>
+
+namespace sf {
+	class Sprite;
+
+	class Texture;
+}
+
+template <typename T>
+class ResourceProvider;
+
+typedef ResourceProvider<sf::Texture> TextureProvider;
 
 class Map : public sf::Drawable {
 	MatrixVector<bool> collisionTiles;

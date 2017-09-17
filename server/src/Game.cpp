@@ -4,7 +4,7 @@ void Game::onTick() {
 	//TODO
 }
 
-void Game::handlePacket(ClientPacketWrapper packetWrapper, PlayerID playerID) {
+void Game::handlePacket(const ClientPacketWrapper& packetWrapper, PlayerID playerID) {
 	//TODO
 }
 

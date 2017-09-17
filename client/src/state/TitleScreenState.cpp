@@ -1,5 +1,7 @@
 #include "TitleScreenState.hpp"
 
+#include <SFML/Window/Event.hpp>
+
 void TitleScreenState::onEnter() {
 
 }

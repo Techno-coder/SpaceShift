@@ -1,7 +1,9 @@
 #include "Map.hpp"
 #include "../resource/GenericResourceProvider.hpp"
 
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 bool Map::checkCollision(const sf::Sprite& sprite) {
 	auto x = static_cast<int>(sprite.getPosition().x / TILE_WIDTH);

@@ -2,6 +2,7 @@
 #include "state/TestState.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Event.hpp>
 
 int main() {
 	StateManager stateManager;
