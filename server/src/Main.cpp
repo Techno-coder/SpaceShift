@@ -26,7 +26,11 @@ int main() {
 		if (socket->receive(packet, ipAddress, port) == sf::Socket::Done)
 			networkManager->handlePacket(packet, ipAddress);
 
-		if (currentTime >= TICK_SPEED) gameManager->onTick();
+		while (currentTime >= TICK_SPEED) {
+			gameManager->onTick();
+			networkManager->onTick();
+			currentTime -= TICK_SPEED;
+		}
 		currentTime += clock.restart();
 	}
 	return 0;

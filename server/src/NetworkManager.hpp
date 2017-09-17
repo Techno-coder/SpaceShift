@@ -5,6 +5,7 @@
 #include "../../shared/utility/DoubleMap.hpp"
 #include "../../shared/Packet.hpp"
 #include "../../shared/ClientPacketWrapper.hpp"
+#include "../../shared/ServerPacket.hpp"
 
 #include <SFML/Network/IpAddress.hpp>
 #include <map>
@@ -12,13 +13,25 @@
 class GameManager;
 
 class NetworkManager {
+	struct PlayerData {
+		sf::Time sinceLastPacket = sf::Time::Zero;
+		bool keepAlivePacketSent = false;
+
+		void resetTimeSinceLastPacket() {
+			sinceLastPacket = sf::Time::Zero;
+			keepAlivePacketSent = false;
+		}
+	};
+
 	std::map<sf::IpAddress, sf::Time> notAuthenticated;
 	DoubleMap<sf::IpAddress, PlayerID> playerIPs;
-	std::shared_ptr<sf::UdpSocket> socket;
+	std::map<PlayerID, PlayerData> playerData;
 
+	std::shared_ptr<sf::UdpSocket> socket;
 	std::shared_ptr<GameManager> gameManager;
 
 	void sendPacket(sf::Packet packet, sf::IpAddress address);
+	void sendPacket(const ServerPacket& packet, PlayerID playerID);
 
 	void handleHandshake(sf::Packet& packet, sf::IpAddress address);
 	void handleDisconnect(PlayerID playerID);
@@ -26,6 +39,7 @@ class NetworkManager {
 public:
 	NetworkManager(std::shared_ptr<GameManager> gameManager, std::shared_ptr<sf::UdpSocket> socket);
 
+	void onTick();
 	void handlePacket(sf::Packet& packet, sf::IpAddress address);
 };
 

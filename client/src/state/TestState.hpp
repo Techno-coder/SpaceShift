@@ -5,14 +5,14 @@
 #include "../level/TileMapTextureProvider.hpp"
 #include "../level/Map.hpp"
 #include "../player/Player.hpp"
-#include "../resource/TextureResourceIDProvider.hpp"
+#include "../resource/ResourceIDProvider.hpp"
 #include "../network/NetworkClient.hpp"
 
 class TestState : public State {
 	NetworkClient networkClient;
 	std::shared_ptr<TileMapTextureProvider> textureProvider = std::make_shared<TileMapTextureProvider>();
-	TextureResourceIDProvider playerTextureIDProvider;
-	GenericTextureProvider playerTextureProvider;
+	ResourceIDProvider playerTextureIDProvider;
+	GenericResourceProvider<sf::Texture> playerTextureProvider;
 	Player player;
 	Map map;
 	float posX = 0, posY = 0;

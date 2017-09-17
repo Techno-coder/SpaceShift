@@ -7,7 +7,8 @@ public:
 	enum class Type : sf::Uint16 {
 		DISCONNECT = 0,
 		AUTHENTICATION_REQUEST = 1,
-		MOVE_REQUEST = 2
+		CHECK_ALIVE_RESPONSE = 2,
+		MOVE_REQUEST = 5
 	} type = Type::DISCONNECT;
 
 private:

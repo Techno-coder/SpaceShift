@@ -2,7 +2,7 @@
 
 #include "../../../shared/utility/MatrixVector.hpp"
 
-MatrixVector<int> getFlatMap(int width, int height) {
+MatrixVector<int> getSquareMap(int width, int height) {
 	MatrixVector<int> map;
 	for (int y = 0; y < height; ++y) {
 		std::vector<int> row;

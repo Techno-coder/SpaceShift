@@ -3,7 +3,7 @@
 #include "Level.hpp"
 #include "../../../shared/utility/FilePath.hpp"
 #include "../../../shared/utility/Tokenizer.hpp"
-#include "../resource/TextureProvider.hpp"
+#include "../resource/ResourceProvider.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 

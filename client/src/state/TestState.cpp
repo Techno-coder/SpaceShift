@@ -1,6 +1,7 @@
 #include "TestState.hpp"
 #include "../../../shared/packets/server/MapChangeEvent.hpp"
 #include "../../../shared/packets/client/PlayerMoveRequest.hpp"
+#include "../resource/ResourceLoaders.hpp"
 
 void TestState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
 	switch (event.type) {
@@ -56,12 +57,14 @@ void TestState::onEnter() {
 	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 6, sf::Vector2i(64, 96));
 	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 7, sf::Vector2i(32, 96));
 	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 8, sf::Vector2i(32, 64));
-	playerTextureProvider.loadTexture(FilePath("dungeon_tiles.png"), playerTextureIDProvider.createNewMapping("GREEN"),
-	                                  sf::IntRect(197, 160, 16, 20));
+	playerTextureProvider.storeResource(
+			loadTextureFromPath(FilePath("dungeon_tiles.png"), sf::IntRect(197, 160, 16, 20)),
+	                                    playerTextureIDProvider.createNewMapping("GREEN"));
+
 	map.setTextureProvider(textureProvider);
 	map.loadMap(tokenize<ResourceID>(FilePath("testMap.txt")));
 	player.move(20, 20);
-	player.setPlayerTexture(playerTextureProvider.getTexture(playerTextureIDProvider.getTextureID("GREEN")));
+	player.setPlayerTexture(playerTextureProvider.getResource(playerTextureIDProvider.getResourceID("GREEN")));
 
 //	networkClient.openConnection("104.236.159.163", 54000);
 	if (networkClient.openConnection(sf::IpAddress::LocalHost, 54000))

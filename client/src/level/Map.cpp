@@ -1,5 +1,5 @@
 #include "Map.hpp"
-#include "../resource/GenericTextureProvider.hpp"
+#include "../resource/GenericResourceProvider.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -30,7 +30,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	for (const auto& row : tiles) {
 		for (const auto& tile : row) {
 			sf::Sprite tileSprite;
-			tileSprite.setTexture(provider->getTexture(tile));
+			tileSprite.setTexture(provider->getResource(tile));
 			tileSprite.setPosition(currentX, currentY);
 			target.draw(tileSprite);
 			currentX += TILE_WIDTH;
@@ -44,4 +44,4 @@ void Map::setTextureProvider(std::shared_ptr<TextureProvider> newProvider) {
 	provider = std::move(newProvider);
 }
 
-Map::Map() : provider(std::make_shared<GenericTextureProvider>()) {}
+Map::Map() : provider(std::make_shared<GenericResourceProvider<sf::Texture>>()) {}

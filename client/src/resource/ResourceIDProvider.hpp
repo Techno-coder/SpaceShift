@@ -5,11 +5,11 @@
 #include <map>
 #include <string>
 
-class TextureResourceIDProvider {
+class ResourceIDProvider {
 	ResourceID nextID = 0;
-	std::map<std::string, ResourceID> texturesIDs;
+	std::map<std::string, ResourceID> resourceIDs;
 public:
 	ResourceID createNewMapping(const std::string& stringID);
-	ResourceID getTextureID(const std::string& stringID) const;
+	ResourceID getResourceID(const std::string& stringID) const;
 };
 

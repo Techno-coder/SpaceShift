@@ -6,8 +6,9 @@ class ServerPacketWrapper : public PacketWrapper {
 public:
 	enum class Type : sf::Uint16 {
 		AUTHENTICATION_RESPONSE = 0,
-		MAP_CHANGE_EVENT = 1,
-		PLAYER_POSITIONS_UPDATE = 2
+		CHECK_ALIVE_REQUEST = 1,
+		MAP_CHANGE_EVENT = 5,
+		PLAYER_POSITIONS_UPDATE = 6
 	} type;
 
 private:

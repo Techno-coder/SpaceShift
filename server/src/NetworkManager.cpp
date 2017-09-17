@@ -2,6 +2,7 @@
 #include "../../shared/packets/HandshakeRequest.hpp"
 #include "../../shared/packets/HandshakeResponse.hpp"
 #include "../../shared/packets/client/AuthenticationRequest.hpp"
+#include "../../shared/packets/server/CheckAliveRequest.hpp"
 
 #include <SFML/Network/UdpSocket.hpp>
 
@@ -12,6 +13,8 @@ void NetworkManager::handlePacket(sf::Packet& packet, sf::IpAddress address) {
 	if (notAuthenticated.count(address) > 0) authenticate(packetWrapper, address);
 
 	PlayerID playerID = playerIPs.get(address);
+	playerData[playerID].resetTimeSinceLastPacket();
+
 	if (packetWrapper.type == ClientPacketWrapper::Type::DISCONNECT) handleDisconnect(playerID);
 	if (gameManager->isInGame(playerID)) gameManager->getGamePlayerIsIn(playerID).handlePacket(packetWrapper, playerID);
 	// TODO handle a different kind of packet (eg game join request)
@@ -51,8 +54,43 @@ void NetworkManager::authenticate(ClientPacketWrapper& packet, sf::IpAddress add
 }
 
 void NetworkManager::handleDisconnect(PlayerID playerID) {
-	//TODO
+	playerData.erase(playerID);
+	playerIPs.remove(playerID);
+	//TODO remove from any connected games
 }
 
 NetworkManager::NetworkManager(std::shared_ptr<GameManager> gameManager, std::shared_ptr<sf::UdpSocket> socket)
 		: socket(std::move(socket)), gameManager(std::move(gameManager)) {}
+
+void NetworkManager::onTick() {
+	for (auto it = notAuthenticated.begin(); it != notAuthenticated.end();) {
+		it->second += TICK_SPEED;
+		if (it->second > AUTHENTICATION_TIMEOUT) {
+			notAuthenticated.erase(it->first);
+			// TODO send packet indicating the client took too long to login
+		} else ++it;
+	}
+
+	for (auto it = playerData.begin(); it != playerData.end();) {
+		it->second.sinceLastPacket += TICK_SPEED;
+		if (it->second.sinceLastPacket > DISCONNECT_TIMEOUT) {
+			handleDisconnect(it->first);
+			continue;
+		}
+
+		if (it->second.sinceLastPacket > KEEP_ALIVE_TIMEOUT && !it->second.keepAlivePacketSent) {
+			it->second.keepAlivePacketSent = true;
+			CheckAliveRequestPacket aliveRequestPacket;
+			sendPacket(aliveRequestPacket, it->first);
+		}
+		++it;
+	}
+}
+
+void NetworkManager::sendPacket(const ServerPacket& packet, PlayerID playerID) {
+	ServerPacketWrapper packetWrapper;
+	packetWrapper.type = packet.getType();
+	packetWrapper.internal = packet.generatePacket();
+	sendPacket(packetWrapper.generatePacket(), playerIPs.get(playerID));
+}
+
