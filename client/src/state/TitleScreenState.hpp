@@ -7,13 +7,10 @@ class TitleScreenState : public State {
 	struct Buttons {
 		Button login;
 
-		void onMouseMove(int xPosition, int yPosition) {
-			login.onMouseMove(xPosition, yPosition);
-		}
-
-		void onMouseClick() {
-			login.onMouseClick();
-		}
+		Buttons();
+		void onMouseMove(int xPosition, int yPosition);
+		void onMouseClick();
+		void draw(sf::RenderTarget& target);
 	} buttons;
 
 public:

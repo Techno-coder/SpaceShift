@@ -3,27 +3,25 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include "../State.hpp"
-#include "../level/TileMapTextureProvider.hpp"
 #include "../level/Map.hpp"
 #include "../player/Player.hpp"
 #include "../resource/ResourceIDProvider.hpp"
 #include "../network/NetworkClient.hpp"
+#include "../resource/GenericResourceProvider.hpp"
+#include "../resource/StaticResourceProviders.hpp"
 
 class TestState : public State {
 	NetworkClient networkClient;
-	std::shared_ptr<TileMapTextureProvider> textureProvider;
-	ResourceIDProvider playerTextureIDProvider;
+	ResourceIDProvider<std::string> playerTextureIDProvider;
 	GenericResourceProvider<sf::Texture> playerTextureProvider;
 	Player player;
-	Map map;
+	Map map{globalTileMapTextureIDs, globalTextures};
 	float posX = 0, posY = 0;
 
 	sf::Clock networkClock;
 	sf::Time currentTime = sf::Time::Zero;
 	void handleKeyboardInput();
 public:
-	TestState();
-
 	void onEnter() override;
 
 	void handleEvent(sf::Event& event, sf::RenderTarget& target) override;

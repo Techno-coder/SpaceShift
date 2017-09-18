@@ -4,8 +4,6 @@
 #include <SFML/Network/UdpSocket.hpp>
 #include <SFML/System/Clock.hpp>
 
-#include <iostream>
-
 int main() {
 	std::shared_ptr<sf::UdpSocket> socket = std::make_shared<sf::UdpSocket>();
 	if (socket->bind(SERVER_PORT) != sf::Socket::Done) return 1;
@@ -21,8 +19,9 @@ int main() {
 		unsigned short port;
 		sf::IpAddress ipAddress;
 		sf::Packet packet;
-		if (socket->receive(packet, ipAddress, port) == sf::Socket::Done)
+		if (socket->receive(packet, ipAddress, port) == sf::Socket::Done) {
 			networkManager->handlePacket(packet, ipAddress);
+		}
 
 		while (currentTime >= TICK_SPEED) {
 			gameManager->onTick();

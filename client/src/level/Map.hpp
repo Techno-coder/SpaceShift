@@ -13,19 +13,20 @@ namespace sf {
 	class Texture;
 }
 
-template <typename T>
-class ResourceProvider;
+template <typename T> class ResourceProvider;
+template <typename T> class ResourceIDProvider;
 
 typedef ResourceProvider<sf::Texture> TextureProvider;
 
 class Map : public sf::Drawable {
 	MatrixVector<bool> collisionTiles;
 	MatrixVector<ResourceID> tiles;
-	std::shared_ptr<TextureProvider> provider;
+	TextureProvider& textureProvider;
+	ResourceIDProvider<ResourceID>& resourceIDProvider;
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 public:
-	Map();
+	Map(ResourceIDProvider<ResourceID>& resourceIDProvider, TextureProvider& textureProvider);
 
 	/**
 	 * Checks whether a sprite is colliding with the tiles
@@ -33,7 +34,5 @@ public:
 	 * @return True if the sprite is colliding with the tiles
 	 */
 	bool checkCollision(const sf::Sprite& sprite);
-
 	void loadMap(MatrixVector<ResourceID> newMap);
-	void setTextureProvider(std::shared_ptr<TextureProvider> newProvider);
 };

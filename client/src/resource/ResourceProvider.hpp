@@ -8,7 +8,7 @@ public:
 	virtual const T& getResource(ResourceID resourceID) const = 0;
 };
 
-namespace sf {
+namespace sf { //TODO Potentially remove this and the providers
 	class Texture;
 }
 

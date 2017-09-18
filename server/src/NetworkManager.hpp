@@ -35,7 +35,9 @@ class NetworkManager {
 
 	void handleHandshake(sf::Packet& packet, sf::IpAddress address);
 	void handleDisconnect(PlayerID playerID);
+
 	void authenticate(ClientPacketWrapper& packet, sf::IpAddress address);
+	bool waitingForAuthentication(sf::IpAddress address);
 public:
 	NetworkManager(std::shared_ptr<GameManager> gameManager, std::shared_ptr<sf::UdpSocket> socket);
 

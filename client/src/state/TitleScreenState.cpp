@@ -1,9 +1,10 @@
 #include "TitleScreenState.hpp"
+#include "../resource/GenericResourceProvider.hpp"
 
 #include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 void TitleScreenState::onEnter() {
-
 }
 
 void TitleScreenState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
@@ -24,9 +25,24 @@ void TitleScreenState::update() {
 }
 
 void TitleScreenState::draw(sf::RenderTarget& target) {
-
+	buttons.draw(target);
 }
 
 TitleScreenState::TitleScreenState() {
-	buttons.login.setText("Login");
+}
+
+TitleScreenState::Buttons::Buttons() {
+	login.setText("Login");
+}
+
+void TitleScreenState::Buttons::onMouseMove(int xPosition, int yPosition) {
+	login.onMouseMove(xPosition, yPosition);
+}
+
+void TitleScreenState::Buttons::onMouseClick() {
+	login.onMouseClick();
+}
+
+void TitleScreenState::Buttons::draw(sf::RenderTarget& target) {
+	target.draw(login);
 }

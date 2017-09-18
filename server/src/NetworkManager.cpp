@@ -7,20 +7,24 @@
 #include <SFML/Network/UdpSocket.hpp>
 
 void NetworkManager::handlePacket(sf::Packet& packet, const sf::IpAddress& address) {
-	if (!playerIPs.exists(address)) handleHandshake(packet, address);
+	static const auto handshakeRequestSize = HandshakeRequestPacket().generatePacket().getDataSize();
+	if (packet.getDataSize() == handshakeRequestSize) return handleHandshake(packet, address);
+
 	ClientPacketWrapper packetWrapper;
 	packetWrapper.parsePacket(packet);
-	if (notAuthenticated.count(address) > 0) authenticate(packetWrapper, address);
+	if (waitingForAuthentication(address)) return authenticate(packetWrapper, address);
 
 	PlayerID playerID = playerIPs.get(address);
 	playerData[playerID].resetTimeSinceLastPacket();
 
-	if (packetWrapper.type == ClientPacketWrapper::Type::DISCONNECT) handleDisconnect(playerID);
+	if (packetWrapper.type == ClientPacketWrapper::Type::DISCONNECT) return handleDisconnect(playerID);
 	if (gameManager->isInGame(playerID)) gameManager->getGamePlayerIsIn(playerID).handlePacket(packetWrapper, playerID);
 	// TODO handle a different kind of packet (eg game join request)
 }
 
 void NetworkManager::handleHandshake(sf::Packet& packet, sf::IpAddress address) {
+	notAuthenticated.erase(address);
+
 	HandshakeRequestPacket handshakeRequestPacket;
 	handshakeRequestPacket.parsePacket(packet);
 
@@ -66,7 +70,7 @@ void NetworkManager::onTick() {
 	for (auto it = notAuthenticated.begin(); it != notAuthenticated.end();) {
 		it->second += TICK_SPEED;
 		if (it->second > AUTHENTICATION_TIMEOUT) {
-			notAuthenticated.erase(it->first);
+			notAuthenticated.erase(it++);
 			// TODO send packet indicating the client took too long to login
 		} else ++it;
 	}
@@ -74,7 +78,7 @@ void NetworkManager::onTick() {
 	for (auto it = playerData.begin(); it != playerData.end();) {
 		it->second.sinceLastPacket += TICK_SPEED;
 		if (it->second.sinceLastPacket > DISCONNECT_TIMEOUT) {
-			handleDisconnect(it->first);
+			handleDisconnect(it++->first);
 			continue;
 		}
 
@@ -92,5 +96,9 @@ void NetworkManager::sendPacket(const ServerPacket& packet, const PlayerID& play
 	packetWrapper.type = packet.getType();
 	packetWrapper.internal = packet.generatePacket();
 	sendPacket(packetWrapper.generatePacket(), playerIPs.get(playerID));
+}
+
+bool NetworkManager::waitingForAuthentication(sf::IpAddress address) {
+	return notAuthenticated.count(address) > 0;
 }
 

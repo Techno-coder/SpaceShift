@@ -22,3 +22,10 @@ std::unique_ptr<sf::SoundBuffer> loadSoundFromPath(const FilePath& filePath) {
 	sound->loadFromFile(filePath);
 	return sound;
 }
+
+std::unique_ptr<sf::Texture>
+loadTileFromPath(const FilePath& filePath, sf::Vector2i texturePosition, sf::Vector2i tileSize) {
+	return std::move(
+			loadTextureFromPath(filePath, sf::IntRect(texturePosition.x, texturePosition.y, tileSize.x, tileSize.y)));
+}
+

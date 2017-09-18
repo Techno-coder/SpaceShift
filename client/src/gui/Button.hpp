@@ -10,6 +10,7 @@ class Button : public sf::Drawable {
 	bool isHovering = false;
 
 	ButtonCallback onHover = []() {};
+	ButtonCallback onUnHover = []() {};
 	ButtonCallback onClick = []() {};
 
 	void updateTextPosition();
@@ -18,6 +19,7 @@ public:
 	void onMouseClick();
 
 	void setOnButtonHover(ButtonCallback callback);
+	void setOnButtonUnHover(ButtonCallback callback);
 	void setOnButtonClick(ButtonCallback callback);
 
 	void setTopLeftCorner(int x, int y);

@@ -1,16 +1,20 @@
 #include "StateManager.hpp"
+//#include "state/TitleScreenState.hpp"
 #include "state/TestState.hpp"
+#include "resource/StaticResourceProviders.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 
 int main() {
-	StateManager stateManager;
-	stateManager.pushState(std::make_unique<TestState>());
-
 	sf::RenderWindow window;
 	window.create(sf::VideoMode(640, 480), "SpaceShift");
 	window.setFramerateLimit(60);
+
+	loadAllDefaultResources();
+
+	StateManager stateManager;
+	stateManager.pushState(std::make_unique<TestState>());
 
 	sf::Clock clock;
 	sf::Time accumulator = sf::Time::Zero;

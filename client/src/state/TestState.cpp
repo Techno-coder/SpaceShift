@@ -33,12 +33,12 @@ void TestState::update() {
 	}
 	currentTime += networkClock.restart();
 	if (currentTime > sf::milliseconds(100)) {
-		printf("Move request packet sent\n");
-		PlayerMoveRequestPacket moveRequestPacket;
-		moveRequestPacket.newPositionX = static_cast<int>(posX);
-		moveRequestPacket.newPositionY = static_cast<int>(posY);
-		networkClient.sendPacket(moveRequestPacket);
-		currentTime = sf::Time::Zero;
+//		printf("Move request packet sent\n");
+//		PlayerMoveRequestPacket moveRequestPacket;
+//		moveRequestPacket.newPositionX = static_cast<int>(posX);
+//		moveRequestPacket.newPositionY = static_cast<int>(posY);
+//		networkClient.sendPacket(moveRequestPacket);
+//		currentTime = sf::Time::Zero;
 	}
 }
 
@@ -53,20 +53,10 @@ void TestState::draw(sf::RenderTarget& target) {
 }
 
 void TestState::onEnter() {
-	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 0, sf::Vector2i(48, 48));
-	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 1, sf::Vector2i(32, 32));
-	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 2, sf::Vector2i(48, 32));
-	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 3, sf::Vector2i(96, 32));
-	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 4, sf::Vector2i(96, 48));
-	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 5, sf::Vector2i(96, 96));
-	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 6, sf::Vector2i(64, 96));
-	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 7, sf::Vector2i(32, 96));
-	textureProvider->loadTexture(FilePath("dungeon_tiles.png"), 8, sf::Vector2i(32, 64));
 	playerTextureProvider.storeResource(
 			loadTextureFromPath(FilePath("dungeon_tiles.png"), sf::IntRect(197, 160, 16, 20)),
 			playerTextureIDProvider.createNewMapping("GREEN"));
 
-	map.setTextureProvider(textureProvider);
 	map.loadMap(tokenize<ResourceID>(FilePath("testMap.txt")));
 	player.move(20, 20);
 	player.setPlayerTexture(playerTextureProvider.getResource(playerTextureIDProvider.getResourceID("GREEN")));
@@ -97,8 +87,4 @@ void TestState::handleKeyboardInput() {
 	}
 	posX = player.getSprite().getPosition().x;
 	posY = player.getSprite().getPosition().y;
-}
-
-TestState::TestState() : textureProvider(std::make_shared<TileMapTextureProvider>()) {
-
 }
