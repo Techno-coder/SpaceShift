@@ -3,8 +3,10 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 
 void Button::onMouseMove(int xPosition, int yPosition) {
+	bool wasHovering = isHovering;
 	isHovering = rect.contains(xPosition, yPosition);
-	if (isHovering) onHover();
+	if (!wasHovering && isHovering) onHover();
+	else if (wasHovering && !isHovering) onUnHover();
 }
 
 void Button::onMouseClick() {
@@ -52,10 +54,14 @@ void Button::setTextColour(sf::Color color) {
 }
 
 void Button::setOnButtonHover(ButtonCallback callback) {
-	onHover = callback;
+	onHover = std::move(callback);
 }
 
 void Button::setOnButtonClick(ButtonCallback callback) {
-	onClick = callback;
+	onClick = std::move(callback);
+}
+
+void Button::setOnButtonUnHover(ButtonCallback callback) {
+	onUnHover = std::move(callback);
 }
 

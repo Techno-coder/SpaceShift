@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../ServerPacket.hpp"
+#include "packets/ServerPacket.hpp"
 
 struct CheckAliveRequestPacket : public ServerPacket {
 	ServerPacketWrapper::Type getType() const override {

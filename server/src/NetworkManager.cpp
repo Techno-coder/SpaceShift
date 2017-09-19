@@ -1,8 +1,8 @@
 #include "NetworkManager.hpp"
-#include "../../shared/packets/HandshakeRequest.hpp"
-#include "../../shared/packets/HandshakeResponse.hpp"
-#include "../../shared/packets/client/AuthenticationRequest.hpp"
-#include "../../shared/packets/server/CheckAliveRequest.hpp"
+#include <packets/HandshakeRequest.hpp>
+#include <packets/HandshakeResponse.hpp>
+#include <packets/client/AuthenticationRequest.hpp>
+#include <packets/server/CheckAliveRequest.hpp>
 
 #include <SFML/Network/UdpSocket.hpp>
 

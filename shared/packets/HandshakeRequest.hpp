@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Packet.hpp"
+#include "Packet.hpp"
 
 #include <SFML/Config.hpp>
 

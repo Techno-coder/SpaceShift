@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Constants.hpp"
+#include "../Constants.hpp"
 
-#include "../../shared/utility/MatrixVector.hpp"
-#include "../../shared/player/PlayerEntity.hpp"
+#include <utility/MatrixVector.hpp>
+#include <player/PlayerEntity.hpp>
 
 #include <map>
 

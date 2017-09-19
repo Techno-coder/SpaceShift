@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../shared/ServerPacketWrapper.hpp"
+#include <packets/ServerPacketWrapper.hpp>
 
 #include <SFML/Network/UdpSocket.hpp>
 #include <SFML/Network/Packet.hpp>

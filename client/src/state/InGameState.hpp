@@ -2,9 +2,10 @@
 
 #include "../State.hpp"
 #include "../level/Map.hpp"
+#include "../resource/StaticResourceProviders.hpp"
 
 class InGameState : public State {
-	Map currentMap;
+	Map currentMap{globalTileMapTextureIDs, globalTextures};
 public:
 	void onEnter() override;
 	void handleEvent(sf::Event& event, sf::RenderTarget& target) override;

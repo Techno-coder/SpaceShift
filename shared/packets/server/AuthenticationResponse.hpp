@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../ServerPacket.hpp"
+#include "packets/ServerPacket.hpp"
 
 struct AuthenticationResponsePacket : public ServerPacket {
 	enum class Response : sf::Uint8 {

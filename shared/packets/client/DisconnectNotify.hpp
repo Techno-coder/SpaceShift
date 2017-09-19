@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../ClientPacket.hpp"
+#include "../ClientPacket.hpp"
 
 struct DisconnectNotifyPacket : public ClientPacket {
 	ClientPacketWrapper::Type getType() const override {

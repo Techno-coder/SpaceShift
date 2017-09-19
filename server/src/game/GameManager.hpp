@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Constants.hpp"
+#include "../Constants.hpp"
 #include "Game.hpp"
-#include "NetworkManager.hpp"
+#include "../NetworkManager.hpp"
 
 #include <map>
 

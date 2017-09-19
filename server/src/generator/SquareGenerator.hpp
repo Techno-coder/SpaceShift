@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../shared/utility/MatrixVector.hpp"
+#include <utility/MatrixVector.hpp>
 
 MatrixVector<int> getSquareMap(int width, int height) {
 	MatrixVector<int> map;

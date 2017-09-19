@@ -1,5 +1,5 @@
 #include "Constants.hpp"
-#include "GameManager.hpp"
+#include "game/GameManager.hpp"
 
 #include <SFML/Network/UdpSocket.hpp>
 #include <SFML/System/Clock.hpp>

@@ -2,7 +2,7 @@
 
 #include "Level.hpp"
 #include "../resource/Resource.hpp"
-#include "../../../shared/utility/MatrixVector.hpp"
+#include <utility/MatrixVector.hpp>
 
 #include <SFML/Graphics/Drawable.hpp>
 #include <vector>

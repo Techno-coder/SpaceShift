@@ -33,10 +33,10 @@ public:
 	}
 
 	S get(T key) {
-		return tFirst[key];
+		return tFirst.at(key);
 	}
 
 	T get(S key) {
-		return sFirst[key];
+		return sFirst.at(key);
 	}
 };

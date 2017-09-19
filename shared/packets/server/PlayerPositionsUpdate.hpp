@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../ServerPacket.hpp"
+#include "packets/ServerPacket.hpp"
 
 struct PlayerPositionsUpdatePacket : public ServerPacket { // TODO
 	ServerPacketWrapper::Type getType() const override {

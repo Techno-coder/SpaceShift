@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../ServerPacket.hpp"
+#include "../ServerPacket.hpp"
 
 struct MapChangeEventPacket : public ServerPacket {
 	std::string serializedMapData;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Packet.hpp"
+#include "Packet.hpp"
 
 struct HandshakeResponsePacket : public Packet {
 	enum class Response : sf::Uint8 {

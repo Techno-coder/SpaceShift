@@ -2,9 +2,9 @@
 
 #include <SFML/System/Clock.hpp>
 
-#include "../../../shared/packets/HandshakeRequest.hpp"
-#include "../../../shared/packets/HandshakeResponse.hpp"
-#include "../../../shared/packets/client/DisconnectNotify.hpp"
+#include <packets/HandshakeRequest.hpp>
+#include <packets/HandshakeResponse.hpp>
+#include <packets/client/DisconnectNotify.hpp>
 
 bool NetworkClient::openConnection(sf::IpAddress address, unsigned short port) {
 	serverAddress = address;

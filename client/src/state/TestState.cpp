@@ -1,8 +1,9 @@
 #include "TestState.hpp"
-#include "../../../shared/packets/server/MapChangeEvent.hpp"
-#include "../../../shared/packets/client/PlayerMoveRequest.hpp"
 #include "../resource/ResourceLoaders.hpp"
-#include "../../../shared/utility/Tokenizer.hpp"
+
+#include <packets/server/MapChangeEvent.hpp>
+#include <packets/client/PlayerMoveRequest.hpp>
+#include <utility/Tokenizer.hpp>
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/View.hpp>

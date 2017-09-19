@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Constants.hpp"
-#include "GameManager.hpp"
-#include "../../shared/utility/DoubleMap.hpp"
-#include "../../shared/Packet.hpp"
+#include "game/GameManager.hpp"
+#include <utility/DoubleMap.hpp>
+#include <packets/Packet.hpp>
 
 #include <SFML/Network/IpAddress.hpp>
 #include <map>
