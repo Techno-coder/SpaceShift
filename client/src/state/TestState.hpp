@@ -2,6 +2,7 @@
 
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/View.hpp>
 #include "../State.hpp"
 #include "../level/Map.hpp"
 #include "../player/Player.hpp"
@@ -20,6 +21,7 @@ class TestState : public State {
 
 	sf::Clock networkClock;
 	sf::Time currentTime = sf::Time::Zero;
+
 	void handleKeyboardInput();
 public:
 	void onEnter() override;

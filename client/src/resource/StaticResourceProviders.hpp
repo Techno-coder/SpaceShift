@@ -15,7 +15,11 @@ extern ResourceIDProvider<ResourceID> globalTileMapTextureIDs;
 extern GenericResourceProvider<sf::SoundBuffer> globalSounds;
 extern ResourceIDProvider<std::string> globalSoundIDs;
 
+enum class GlobalFont {
+	KENVECTOR,
+	KENVECTOR_THIN
+};
 extern GenericResourceProvider<sf::Font> globalFonts;
-extern ResourceIDProvider<std::string> globalFontIDs;
+extern ResourceIDProvider<GlobalFont> globalFontIDs;
 
 void loadAllDefaultResources();

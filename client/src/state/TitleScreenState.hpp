@@ -12,9 +12,7 @@ class TitleScreenState : public State {
 		void onMouseClick();
 		void draw(sf::RenderTarget& target);
 	} buttons;
-
 public:
-	TitleScreenState();
 	void onEnter() override;
 
 	void handleEvent(sf::Event& event, sf::RenderTarget& target) override;

@@ -23,7 +23,10 @@ class NetworkManager {
 		}
 	};
 
+	std::mutex notAuthenticatedMutex;
 	std::map<sf::IpAddress, sf::Time> notAuthenticated;
+
+	std::mutex playerDataMutex;
 	DoubleMap<sf::IpAddress, PlayerID> playerIPs;
 	std::map<PlayerID, PlayerData> playerData;
 

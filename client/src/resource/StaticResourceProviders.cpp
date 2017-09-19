@@ -14,7 +14,7 @@ GenericResourceProvider<sf::SoundBuffer> globalSounds;
 ResourceIDProvider<std::string> globalSoundIDs;
 
 GenericResourceProvider<sf::Font> globalFonts;
-ResourceIDProvider<std::string> globalFontIDs;
+ResourceIDProvider<GlobalFont> globalFontIDs;
 
 ResourceID loadTile(int positionX, int positionY, ResourceID tileID) {
 	const FilePath tileMapPath("dungeon_tiles.png");
@@ -45,8 +45,16 @@ void loadSounds() {
 	//TODO
 }
 
+void loadFont(const std::string& fontFileName, const GlobalFont& fontID) {
+	const std::string fontsPrefix = "fonts/";
+	globalFonts.storeResource(loadFontFromPath(FilePath(fontsPrefix + fontFileName)),
+	                          globalFontIDs.createNewMapping(fontID));
+}
+
 void loadFonts() {
-	//TODO
+	loadFont("kenvector_future.ttf", GlobalFont::KENVECTOR);
+	loadFont("kenvector_future_thin.ttf", GlobalFont::KENVECTOR_THIN);
+	//TODO REST
 }
 
 void loadAllDefaultResources() {

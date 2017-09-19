@@ -9,6 +9,7 @@
 void NetworkManager::handlePacket(sf::Packet& packet, const sf::IpAddress& address) {
 	static const auto handshakeRequestSize = HandshakeRequestPacket().generatePacket().getDataSize();
 	if (packet.getDataSize() == handshakeRequestSize) return handleHandshake(packet, address);
+	if (!playerIPs.exists(address)) return;
 
 	ClientPacketWrapper packetWrapper;
 	packetWrapper.parsePacket(packet);
@@ -23,6 +24,7 @@ void NetworkManager::handlePacket(sf::Packet& packet, const sf::IpAddress& addre
 }
 
 void NetworkManager::handleHandshake(sf::Packet& packet, sf::IpAddress address) {
+	std::lock_guard<std::mutex> guard(notAuthenticatedMutex);
 	notAuthenticated.erase(address);
 
 	HandshakeRequestPacket handshakeRequestPacket;
@@ -49,15 +51,18 @@ void NetworkManager::authenticate(ClientPacketWrapper& packet, sf::IpAddress add
 	requestPacket.parsePacket(packet.internal);
 
 	// TODO proper authentication with token
+	std::lock_guard<std::mutex> guard(notAuthenticatedMutex);
 	notAuthenticated.erase(address);
 	PlayerID totallyLegitPlayerID;
 	do {
 		totallyLegitPlayerID = static_cast<PlayerID>(rand());
 	} while (playerIPs.exists(totallyLegitPlayerID));
+	std::lock_guard<std::mutex> playerDataGuard(playerDataMutex);
 	playerIPs.add(address, totallyLegitPlayerID); // TODO Proper player ids l m a o
 }
 
 void NetworkManager::handleDisconnect(PlayerID playerID) {
+	std::lock_guard<std::mutex> guard(playerDataMutex);
 	playerData.erase(playerID);
 	playerIPs.remove(playerID);
 	//TODO remove from any connected games
@@ -70,6 +75,7 @@ void NetworkManager::onTick() {
 	for (auto it = notAuthenticated.begin(); it != notAuthenticated.end();) {
 		it->second += TICK_SPEED;
 		if (it->second > AUTHENTICATION_TIMEOUT) {
+			std::lock_guard<std::mutex> guard(notAuthenticatedMutex);
 			notAuthenticated.erase(it++);
 			// TODO send packet indicating the client took too long to login
 		} else ++it;

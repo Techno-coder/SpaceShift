@@ -1,5 +1,6 @@
 #include "TitleScreenState.hpp"
 #include "../resource/GenericResourceProvider.hpp"
+#include "../resource/StaticResourceProviders.hpp"
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -28,11 +29,9 @@ void TitleScreenState::draw(sf::RenderTarget& target) {
 	buttons.draw(target);
 }
 
-TitleScreenState::TitleScreenState() {
-}
-
 TitleScreenState::Buttons::Buttons() {
 	login.setText("Login");
+	login.setFont(globalFonts.getResource(globalFontIDs.getResourceID(GlobalFont::KENVECTOR)));
 }
 
 void TitleScreenState::Buttons::onMouseMove(int xPosition, int yPosition) {
