@@ -1,4 +1,5 @@
 #include "Constants.hpp"
+#include "NetworkManager.hpp"
 #include "game/GameManager.hpp"
 
 #include <SFML/Network/UdpSocket.hpp>
@@ -30,12 +31,12 @@ int main() {
 	if (socket->bind(SERVER_PORT) != sf::Socket::Done) return 1;
 	socket->setBlocking(true);
 
-	std::shared_ptr<NetworkManager> networkManager;
-	std::shared_ptr<GameManager> gameManager = std::make_shared<GameManager>(networkManager);
-	networkManager = std::make_shared<NetworkManager>(gameManager, socket);
+	NetworkManager networkManager(socket);
+	GameManager gameManager(networkManager);
+	networkManager.registerPacketHandler(gameManager);
 
-	auto socketListenWrapper = [&]() { while (true) socketListen(*socket, *networkManager); };
-	auto updateStateWrapper = [&]() { while (true) updateState(*networkManager, *gameManager); };
+	auto socketListenWrapper = [&]() { while (true) socketListen(*socket, networkManager); };
+	auto updateStateWrapper = [&]() { while (true) updateState(networkManager, gameManager); };
 	std::thread socketThread(socketListenWrapper);
 	std::thread updateThread(updateStateWrapper);
 	socketThread.join();

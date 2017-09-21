@@ -8,4 +8,4 @@ void Game::handlePacket(const ClientPacketWrapper& packetWrapper, PlayerID playe
 	//TODO
 }
 
-Game::Game(std::shared_ptr<NetworkManager> networkManager) : networkManager(std::move(networkManager)) {}
+Game::Game(PacketSender& packetSender) : packetSender(packetSender) {}

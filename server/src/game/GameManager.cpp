@@ -8,8 +8,12 @@ Game& GameManager::getGamePlayerIsIn(PlayerID playerID) {
 	return *games[inGamePlayers[playerID]];
 }
 
-GameManager::GameManager(std::shared_ptr<NetworkManager> networkManager) : networkManager(std::move(networkManager)) {}
-
 void GameManager::onTick() {
 	for (auto& pair : games) pair.second->onTick();
+}
+
+GameManager::GameManager(PacketSender& packetSender) : packetSender(packetSender) {}
+
+void GameManager::handlePacket(const ClientPacketWrapper& packetWrapper, PlayerID playerID) {
+	//TODO
 }

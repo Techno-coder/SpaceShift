@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Constants.hpp"
+#include "../PacketHandler.hpp"
 
 #include <utility/MatrixVector.hpp>
 #include <player/PlayerEntity.hpp>
@@ -13,14 +14,16 @@ class ClientPacketWrapper;
 
 class NetworkManager;
 
-class Game {
+class PacketSender;
+
+class Game : public PacketHandler {
 	MatrixVector<TileID> currentMap;
 	std::map<PlayerID, PlayerEntity> joinedPlayers;
 
-	std::shared_ptr<NetworkManager> networkManager;
+	PacketSender& packetSender;
 public:
-	explicit Game(std::shared_ptr<NetworkManager> networkManager);
+	explicit Game(PacketSender& packetSender);
 
 	void onTick();
-	void handlePacket(const ClientPacketWrapper& packetWrapper, PlayerID playerID);
+	void handlePacket(const ClientPacketWrapper& packetWrapper, PlayerID playerID) override;
 };

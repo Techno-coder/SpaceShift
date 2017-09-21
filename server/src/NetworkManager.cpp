@@ -1,4 +1,5 @@
 #include "NetworkManager.hpp"
+#include "game/GameManager.hpp"
 #include <packets/HandshakeRequest.hpp>
 #include <packets/HandshakeResponse.hpp>
 #include <packets/client/AuthenticationRequest.hpp>
@@ -19,8 +20,7 @@ void NetworkManager::handlePacket(sf::Packet& packet, const sf::IpAddress& addre
 	playerData[playerID].resetTimeSinceLastPacket();
 
 	if (packetWrapper.type == ClientPacketWrapper::Type::DISCONNECT) return handleDisconnect(playerID);
-	if (gameManager->isInGame(playerID)) gameManager->getGamePlayerIsIn(playerID).handlePacket(packetWrapper, playerID);
-	// TODO handle a different kind of packet (eg game join request)
+	for (auto& handler : packetHandlers) handler.get().handlePacket(packetWrapper, playerID);
 }
 
 void NetworkManager::handleHandshake(sf::Packet& packet, sf::IpAddress address) {
@@ -64,8 +64,7 @@ void NetworkManager::handleDisconnect(PlayerID playerID) {
 	//TODO remove from any connected games
 }
 
-NetworkManager::NetworkManager(std::shared_ptr<GameManager> gameManager, std::shared_ptr<sf::UdpSocket> socket)
-		: socket(std::move(socket)), gameManager(std::move(gameManager)) {}
+NetworkManager::NetworkManager(std::shared_ptr<sf::UdpSocket> socket) : socket(std::move(socket)) {}
 
 void NetworkManager::onTick() {
 	for (auto it = notAuthenticated.begin(); it != notAuthenticated.end();) {
@@ -101,5 +100,9 @@ void NetworkManager::sendPacket(const ServerPacket& packet, const PlayerID& play
 
 bool NetworkManager::waitingForAuthentication(sf::IpAddress address) {
 	return notAuthenticated.count(address) > 0;
+}
+
+void NetworkManager::registerPacketHandler(PacketHandler& packetHandler) {
+	packetHandlers.push_back(packetHandler);
 }
 

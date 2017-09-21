@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Constants.hpp"
-#include "game/GameManager.hpp"
+#include "PacketSender.hpp"
 #include <utility/DoubleMap.hpp>
 #include <packets/Packet.hpp>
 
@@ -10,9 +10,13 @@
 
 class ServerPacket;
 
+class ClientPacketWrapper;
+
 class GameManager;
 
-class NetworkManager {
+class PacketHandler;
+
+class NetworkManager : public PacketSender {
 	struct PlayerData {
 		sf::Time sinceLastPacket = sf::Time::Zero;
 		bool keepAlivePacketSent = false;
@@ -29,10 +33,9 @@ class NetworkManager {
 	std::map<PlayerID, PlayerData> playerData;
 
 	std::shared_ptr<sf::UdpSocket> socket;
-	std::shared_ptr<GameManager> gameManager;
+	std::vector<std::reference_wrapper<PacketHandler>> packetHandlers;
 
 	void sendPacket(sf::Packet packet, const sf::IpAddress& address);
-	void sendPacket(const ServerPacket& packet, const PlayerID& playerID);
 
 	void handleHandshake(sf::Packet& packet, sf::IpAddress address);
 	void handleDisconnect(PlayerID playerID);
@@ -40,8 +43,11 @@ class NetworkManager {
 	void authenticate(ClientPacketWrapper& packet, sf::IpAddress address);
 	bool waitingForAuthentication(sf::IpAddress address);
 public:
-	NetworkManager(std::shared_ptr<GameManager> gameManager, std::shared_ptr<sf::UdpSocket> socket);
+	explicit NetworkManager(std::shared_ptr<sf::UdpSocket> socket);
 
 	void onTick();
 	void handlePacket(sf::Packet& packet, const sf::IpAddress& address);
+	void registerPacketHandler(PacketHandler& packetHandler);
+
+	void sendPacket(const ServerPacket& packet, const PlayerID& playerID) override;
 };
