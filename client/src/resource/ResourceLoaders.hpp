@@ -2,13 +2,9 @@
 
 #include <SFML/Graphics/Rect.hpp>
 
-namespace sf {
-	class Texture;
-
-	class SoundBuffer;
-
-	class Font;
-}
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Graphics/Font.hpp>
 
 class FilePath;
 
