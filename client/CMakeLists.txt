@@ -31,6 +31,6 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${SHARED_FILES})
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-target_link_libraries(${PROJECT_NAME} sfml-system sfml-audio sfml-window sfml-graphics sfml-network Threads::Threads)
+target_link_libraries(${PROJECT_NAME} sfml-network sfml-audio sfml-graphics sfml-window sfml-system Threads::Threads)
 
 file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
