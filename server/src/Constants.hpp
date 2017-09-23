@@ -4,8 +4,11 @@
 #include <SFML/System/Time.hpp>
 
 typedef sf::Uint16 GameID;
-
-constexpr unsigned short SERVER_PORT = 54001; //TODO change later
+#ifdef NDEBUG
+constexpr unsigned short SERVER_PORT = 54000;
+#else
+constexpr unsigned short SERVER_PORT = 54001;
+#endif
 const sf::Time TICK_SPEED = sf::seconds(1.0f / 20.0f);
 
 const sf::Time AUTHENTICATION_TIMEOUT = sf::seconds(5.0f);

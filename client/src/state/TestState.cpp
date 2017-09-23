@@ -102,10 +102,13 @@ void TestState::onEnter() {
 	player.move(20, 20);
 	player.setPlayerTexture(playerTextureProvider.getResource(playerTextureIDProvider.getResourceID("GREEN")));
 
-//	networkClient.openConnection("104.236.159.163", 54000);
-	if (networkClient.openConnection(sf::IpAddress::LocalHost, 54000))
+#ifdef NDEBUG
+	if (networkClient.openConnection("104.131.156.197", 54000)) {
+#else
+	if (networkClient.openConnection(sf::IpAddress::LocalHost, 54000)) {
+#endif
 		printf("Connection successful\n"); //TODO Change to server address
-	else printf("Unable to connect");
+	} else printf("Unable to connect");
 
 	AuthenticationRequestPacket authenticationRequestPacket;
 	authenticationRequestPacket.authenticationToken = "POO_YOU_SUCKER";

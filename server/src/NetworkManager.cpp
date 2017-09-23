@@ -41,8 +41,11 @@ void NetworkManager::handleHandshake(sf::Packet& packet, sf::IpAddress address) 
 }
 
 void NetworkManager::sendPacket(sf::Packet packet, const sf::IpAddress& address) {
-//	socket->send(packet, address, SERVER_PORT);
-	socket->send(packet, address, SERVER_PORT - 1); //TODO DEBUG ONLY!!
+#ifdef NDEBUG
+	socket->send(packet, address, SERVER_PORT);
+#else
+	socket->send(packet, address, SERVER_PORT - 1);
+#endif
 }
 
 void NetworkManager::authenticate(ClientPacketWrapper& packet, sf::IpAddress address) {

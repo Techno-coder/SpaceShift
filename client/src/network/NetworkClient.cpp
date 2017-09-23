@@ -37,8 +37,11 @@ void NetworkClient::closeConnection() {
 }
 
 sf::Socket::Status NetworkClient::sendPacket(sf::Packet packet) {
-//	return socket.send(packet, serverAddress, serverPort);
-	return socket.send(packet, serverAddress, 54001); //TODO Change to regular port when not in debug mode
+#ifdef NDEBUG
+	return socket.send(packet, serverAddress, serverPort);
+#else
+	return socket.send(packet, serverAddress, 54001);
+#endif
 }
 
 sf::Socket::Status NetworkClient::sendPacket(const ClientPacket& packet) {
