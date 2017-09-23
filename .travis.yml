@@ -10,7 +10,7 @@ before_script:
   - popd
 
   - pip install 'requests[security]'
-  - pip install conan
+  - pip install --user conan
 
 matrix:
   include:
