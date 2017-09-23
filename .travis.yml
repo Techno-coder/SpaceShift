@@ -9,6 +9,7 @@ before_script:
   - export PATH="${PWD}/bin:$PATH"
   - popd
 
+  - pip install 'requests[security]'
   - pip install conan
 
 matrix:
