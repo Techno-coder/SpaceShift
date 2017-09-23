@@ -13,8 +13,11 @@ namespace sf {
 	class Texture;
 }
 
-template <typename T> class ResourceProvider;
-template <typename T> class ResourceIDProvider;
+template <typename T>
+class ResourceProvider;
+
+template <typename T>
+class ResourceIDProvider;
 
 typedef ResourceProvider<sf::Texture> TextureProvider;
 

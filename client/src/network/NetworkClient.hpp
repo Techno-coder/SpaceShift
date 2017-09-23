@@ -13,6 +13,8 @@ class NetworkClient {
 	unsigned short serverPort;
 
 	sf::Packet nextPacket;
+
+	sf::Socket::Status sendPacket(sf::Packet packet);
 public:
 	/**
 	 * Closes the current connection if one exists
@@ -26,7 +28,6 @@ public:
 	 */
 	bool openConnection(sf::IpAddress address, unsigned short port);
 
-	sf::Socket::Status sendPacket(sf::Packet packet);
 	sf::Socket::Status sendPacket(const ClientPacket& packet);
 
 	/**

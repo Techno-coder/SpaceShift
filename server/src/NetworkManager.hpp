@@ -12,8 +12,6 @@ class ServerPacket;
 
 class ClientPacketWrapper;
 
-class GameManager;
-
 class PacketHandler;
 
 class NetworkManager : public PacketSender {
@@ -38,7 +36,7 @@ class NetworkManager : public PacketSender {
 	void sendPacket(sf::Packet packet, const sf::IpAddress& address);
 
 	void handleHandshake(sf::Packet& packet, sf::IpAddress address);
-	void handleDisconnect(PlayerID playerID);
+	void handleDisconnect(PlayerID playerID, const ClientPacketWrapper& disconnectPacketWrapper);
 
 	void authenticate(ClientPacketWrapper& packet, sf::IpAddress address);
 	bool waitingForAuthentication(sf::IpAddress address);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "packets/ClientPacket.hpp"
+#include <packets/ClientPacket.hpp>
 
 struct AuthenticationRequestPacket : public ClientPacket { //TODO add encryption
 	std::string authenticationToken;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Constants.hpp"
+#include <utility/Constants.hpp>
 
 class ServerPacket;
 

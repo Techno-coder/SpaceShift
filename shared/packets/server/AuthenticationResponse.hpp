@@ -1,6 +1,6 @@
 #pragma once
 
-#include "packets/ServerPacket.hpp"
+#include <packets/ServerPacket.hpp>
 
 struct AuthenticationResponsePacket : public ServerPacket {
 	enum class Response : sf::Uint8 {
@@ -14,7 +14,7 @@ struct AuthenticationResponsePacket : public ServerPacket {
 
 	sf::Packet generatePacket() const override {
 		sf::Packet packet;
-		return packet << response;
+		return packet << static_cast<sf::Uint8>(response);
 	}
 
 	void parsePacket(sf::Packet& packet) override {

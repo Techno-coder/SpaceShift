@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../ServerPacket.hpp"
+#include <packets/ServerPacket.hpp>
 
-struct MapChangeEventPacket : public ServerPacket {
+struct MapChangeEventPacket : public ServerPacket { //TODO consider parsing map data in here
 	std::string serializedMapData;
 
 	ServerPacketWrapper::Type getType() const override {

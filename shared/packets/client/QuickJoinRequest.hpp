@@ -2,9 +2,9 @@
 
 #include <packets/ClientPacket.hpp>
 
-struct CheckAliveResponsePacket : public ClientPacket {
+struct QuickJoinRequestPacket : public ClientPacket {
 	ClientPacketWrapper::Type getType() const override {
-		return ClientPacketWrapper::Type::CHECK_ALIVE_RESPONSE;
+		return ClientPacketWrapper::Type::QUICK_JOIN_REQUEST;
 	}
 
 	sf::Packet generatePacket() const override {

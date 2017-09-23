@@ -3,6 +3,8 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/View.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <utility/Constants.hpp>
 #include "../State.hpp"
 #include "../level/Map.hpp"
 #include "../player/Player.hpp"
@@ -22,6 +24,7 @@ class TestState : public State {
 	sf::Clock networkClock;
 	sf::Time currentTime = sf::Time::Zero;
 
+	std::map<PlayerID, sf::RectangleShape> multiplayerSprites;
 	void handleKeyboardInput();
 public:
 	void onEnter() override;

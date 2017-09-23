@@ -6,8 +6,11 @@
 #include <utility/Tokenizer.hpp>
 
 #include <SFML/Window/Event.hpp>
-#include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <packets/client/QuickJoinRequest.hpp>
+#include <packets/client/AuthenticationRequest.hpp>
+#include <packets/server/AuthenticationResponse.hpp>
+#include <packets/server/PlayerPositionsUpdate.hpp>
 
 void TestState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
 	switch (event.type) {
@@ -23,23 +26,57 @@ void TestState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
 
 void TestState::update() {
 	handleKeyboardInput();
-	if (networkClient.receiveNewPacket()) {
+	while (networkClient.receiveNewPacket()) {
 		ServerPacketWrapper newPacket = networkClient.getRecentPacket();
-		if (newPacket.type == ServerPacketWrapper::Type::MAP_CHANGE_EVENT) {
-			printf("MAP_CHANGE_EVENT packet received\n");
-			MapChangeEventPacket mapChangeEventPacket;
-			mapChangeEventPacket.parsePacket(newPacket.internal);
-			map.loadMap(tokenize<ResourceID>(mapChangeEventPacket.serializedMapData));
+		typedef ServerPacketWrapper::Type Type;
+		switch (newPacket.type) {
+			case Type::MAP_CHANGE_EVENT: {
+				printf("MAP_CHANGE_EVENT packet received\n");
+				MapChangeEventPacket mapChangeEventPacket;
+				mapChangeEventPacket.parsePacket(newPacket.internal);
+				map.loadMap(tokenize<ResourceID>(mapChangeEventPacket.serializedMapData));
+				break;
+			}
+			case Type::PLAYER_POSITIONS_UPDATE: {
+				PlayerPositionsUpdatePacket positionsUpdatePacket;
+				positionsUpdatePacket.parsePacket(newPacket.internal);
+				for (const auto& pair : positionsUpdatePacket.playerPositions) {
+					multiplayerSprites[pair.first].setPosition(pair.second.first, pair.second.second);
+					multiplayerSprites[pair.first].setSize(sf::Vector2f(20, 20));
+					multiplayerSprites[pair.first].setFillColor(sf::Color::Red);
+				}
+				break;
+			}
+			case Type::AUTHENTICATION_RESPONSE: {
+				AuthenticationResponsePacket responsePacket;
+				responsePacket.parsePacket(newPacket.internal);
+				if (responsePacket.response == AuthenticationResponsePacket::Response::SUCCESSFUL) {
+					printf("AUTHENTICATION OK\n");
+				} else {
+					printf("AUTHENTICATION BAD\n");
+				}
+
+				QuickJoinRequestPacket quickJoinRequestPacket;
+				networkClient.sendPacket(quickJoinRequestPacket);
+				break;
+			}
+			case Type::CHECK_ALIVE_REQUEST: {
+				printf("CHECK ALIVE REQUEST RECEIVED\n");
+//				CheckAliveResponsePacket responsePacket;
+//				networkClient.sendPacket(responsePacket);
+				break;
+			}
+			default:
+				break;
 		}
 	}
 	currentTime += networkClock.restart();
 	if (currentTime > sf::milliseconds(100)) {
-//		printf("Move request packet sent\n");
-//		PlayerMoveRequestPacket moveRequestPacket;
-//		moveRequestPacket.newPositionX = static_cast<int>(posX);
-//		moveRequestPacket.newPositionY = static_cast<int>(posY);
-//		networkClient.sendPacket(moveRequestPacket);
-//		currentTime = sf::Time::Zero;
+		PlayerMoveRequestPacket moveRequestPacket;
+		moveRequestPacket.newPositionX = static_cast<int>(posX);
+		moveRequestPacket.newPositionY = static_cast<int>(posY);
+		networkClient.sendPacket(moveRequestPacket);
+		currentTime = sf::Time::Zero;
 	}
 }
 
@@ -51,6 +88,9 @@ void TestState::draw(sf::RenderTarget& target) {
 
 	target.draw(map);
 	target.draw(player.getSprite());
+	for (const auto& pair : multiplayerSprites) {
+		target.draw(pair.second);
+	}
 }
 
 void TestState::onEnter() {
@@ -66,6 +106,10 @@ void TestState::onEnter() {
 	if (networkClient.openConnection(sf::IpAddress::LocalHost, 54000))
 		printf("Connection successful\n"); //TODO Change to server address
 	else printf("Unable to connect");
+
+	AuthenticationRequestPacket authenticationRequestPacket;
+	authenticationRequestPacket.authenticationToken = "POO_YOU_SUCKER";
+	networkClient.sendPacket(authenticationRequestPacket);
 }
 
 void TestState::handleKeyboardInput() {

@@ -1,16 +1,17 @@
 #include "NetworkManager.hpp"
-#include "game/GameManager.hpp"
+#include "game/GamesManager.hpp"
 #include <packets/HandshakeRequest.hpp>
 #include <packets/HandshakeResponse.hpp>
-#include <packets/client/AuthenticationRequest.hpp>
 #include <packets/server/CheckAliveRequest.hpp>
+#include <packets/server/AuthenticationResponse.hpp>
+#include <packets/client/AuthenticationRequest.hpp>
 
 #include <SFML/Network/UdpSocket.hpp>
 
 void NetworkManager::handlePacket(sf::Packet& packet, const sf::IpAddress& address) {
 	static const auto handshakeRequestSize = HandshakeRequestPacket().generatePacket().getDataSize();
 	if (packet.getDataSize() == handshakeRequestSize) return handleHandshake(packet, address);
-	if (!playerIPs.exists(address)) return;
+	if (!playerIPs.exists(address) && !waitingForAuthentication(address)) return;
 
 	ClientPacketWrapper packetWrapper;
 	packetWrapper.parsePacket(packet);
@@ -19,7 +20,7 @@ void NetworkManager::handlePacket(sf::Packet& packet, const sf::IpAddress& addre
 	PlayerID playerID = playerIPs.get(address);
 	playerData[playerID].resetTimeSinceLastPacket();
 
-	if (packetWrapper.type == ClientPacketWrapper::Type::DISCONNECT) return handleDisconnect(playerID);
+	if (packetWrapper.type == ClientPacketWrapper::Type::DISCONNECT) return handleDisconnect(playerID, packetWrapper);
 	for (auto& handler : packetHandlers) handler.get().handlePacket(packetWrapper, playerID);
 }
 
@@ -56,12 +57,15 @@ void NetworkManager::authenticate(ClientPacketWrapper& packet, sf::IpAddress add
 		totallyLegitPlayerID = static_cast<PlayerID>(rand());
 	} while (playerIPs.exists(totallyLegitPlayerID));
 	playerIPs.add(address, totallyLegitPlayerID); // TODO Proper player ids l m a o
+	AuthenticationResponsePacket responsePacket;
+	responsePacket.response = AuthenticationResponsePacket::Response::SUCCESSFUL;
+	sendPacket(responsePacket, totallyLegitPlayerID);
 }
 
-void NetworkManager::handleDisconnect(PlayerID playerID) {
+void NetworkManager::handleDisconnect(PlayerID playerID, const ClientPacketWrapper& disconnectPacketWrapper) {
+	for (auto& handler : packetHandlers) handler.get().handlePacket(disconnectPacketWrapper, playerID);
 	playerData.erase(playerID);
 	playerIPs.remove(playerID);
-	//TODO remove from any connected games
 }
 
 NetworkManager::NetworkManager(std::shared_ptr<sf::UdpSocket> socket) : socket(std::move(socket)) {}
@@ -78,7 +82,7 @@ void NetworkManager::onTick() {
 	for (auto it = playerData.begin(); it != playerData.end();) {
 		it->second.sinceLastPacket += TICK_SPEED;
 		if (it->second.sinceLastPacket > DISCONNECT_TIMEOUT) {
-			handleDisconnect(it++->first);
+			handleDisconnect(it++->first, ClientPacketWrapper());
 			continue;
 		}
 
@@ -103,6 +107,6 @@ bool NetworkManager::waitingForAuthentication(sf::IpAddress address) {
 }
 
 void NetworkManager::registerPacketHandler(PacketHandler& packetHandler) {
-	packetHandlers.push_back(packetHandler);
+	packetHandlers.emplace_back(packetHandler);
 }
 

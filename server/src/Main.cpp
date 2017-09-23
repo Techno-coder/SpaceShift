@@ -1,6 +1,6 @@
 #include "Constants.hpp"
+#include "game/GamesManager.hpp"
 #include "NetworkManager.hpp"
-#include "game/GameManager.hpp"
 
 #include <SFML/Network/UdpSocket.hpp>
 #include <SFML/System/Clock.hpp>
@@ -27,6 +27,8 @@ void socketListen(sf::UdpSocket& socket, NetworkManager& networkManager) {
 }
 
 int main() {
+	srand(time(nullptr));
+
 	std::shared_ptr<sf::UdpSocket> socket = std::make_shared<sf::UdpSocket>();
 	if (socket->bind(SERVER_PORT) != sf::Socket::Done) return 1;
 	socket->setBlocking(true);

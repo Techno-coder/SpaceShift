@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ClientPacket.hpp"
+#include <packets/ClientPacket.hpp>
 
 struct PlayerMoveRequestPacket : public ClientPacket {
 	int newPositionX = 0, newPositionY = 0;
