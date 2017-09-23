@@ -4,7 +4,6 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Network/Packet.hpp>
 #include <utility/Constants.hpp>
 #include "../State.hpp"
 #include "../level/Map.hpp"
