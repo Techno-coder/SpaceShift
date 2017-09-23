@@ -28,6 +28,9 @@ conan_cmake_run(REQUIRES sfml/2.4.0@diego_stamigni/stable BASIC_SETUP BUILD miss
 include_directories(../shared)
 include_directories(${CONAN_INCLUDE_DIRS})
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${SHARED_FILES})
-target_link_libraries(${PROJECT_NAME} sfml-system sfml-audio sfml-window sfml-graphics sfml-network)
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(${PROJECT_NAME} sfml-system sfml-audio sfml-window sfml-graphics sfml-network Threads::Threads)
 
 file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
