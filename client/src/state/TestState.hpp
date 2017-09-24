@@ -1,10 +1,5 @@
 #pragma once
 
-#include <SFML/System/Clock.hpp>
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/View.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <utility/Constants.hpp>
 #include "../State.hpp"
 #include "../level/Map.hpp"
 #include "../player/Player.hpp"
@@ -12,7 +7,12 @@
 #include "../network/NetworkClient.hpp"
 #include "../resource/GenericResourceProvider.hpp"
 #include "../resource/StaticResourceProviders.hpp"
+#include <utility/Constants.hpp>
 
+#include <SFML/System/Clock.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/View.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 class TestState : public State {
 	NetworkClient networkClient;
 	ResourceIDProvider<std::string> playerTextureIDProvider;

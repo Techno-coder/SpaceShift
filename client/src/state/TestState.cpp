@@ -103,7 +103,7 @@ void TestState::onEnter() {
 	player.setPlayerTexture(playerTextureProvider.getResource(playerTextureIDProvider.getResourceID("GREEN")));
 
 #ifdef NDEBUG
-	if (networkClient.openConnection("104.131.156.197", 54000)) {
+	if (networkClient.openConnection("45.55.3.172", 54000)) {
 #else
 	if (networkClient.openConnection(sf::IpAddress::LocalHost, 54000)) {
 #endif

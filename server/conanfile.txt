@@ -1,0 +1,10 @@
+[generators]
+cmake
+
+[requires]
+sfml/2.4.0@diego_stamigni/stable
+
+[options]
+
+[imports]
+lib, *.dylib* -> ./bin
