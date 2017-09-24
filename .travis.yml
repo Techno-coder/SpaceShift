@@ -1,6 +1,15 @@
 language: cpp
+compiler: g++
+dist: trusty
+
+before_install:
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
 
 install:
+  - sudo apt-get install -qq g++-6
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
+
   - mkdir cmake
   - pushd cmake
   - wget https://cmake.org/files/v3.8/cmake-3.8.0-Linux-x86_64.sh
@@ -12,28 +21,21 @@ install:
   - pip install 'requests[security]'
   - pip install --user conan
 
-matrix:
-  include:
-    # Regular linux build
-    - os: linux
-      compiler: g++
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
-            - libglew-dev
-            - libsndfile1-dev
-            - libopenal-dev
-            - libfreetype6-dev
-            - libx11-xcb-dev
-            - udev
-            - libudev-dev
-            - libxcb-image0
-            - libxcb-image0-dev
-      script:
-        - mkdir build
-        - cd build
-        - cmake -DCMAKE_BUILD_TYPE=Release ..
-        - make
+addons:
+  apt:
+    packages:
+      - libglew-dev
+      - libsndfile1-dev
+      - libopenal-dev
+      - libfreetype6-dev
+      - libx11-xcb-dev
+      - udev
+      - libudev-dev
+      - libxcb-image0
+      - libxcb-image0-dev
+
+script:
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Release ..
+  - make
