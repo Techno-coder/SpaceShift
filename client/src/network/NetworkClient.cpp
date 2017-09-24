@@ -54,7 +54,9 @@ sf::Socket::Status NetworkClient::sendPacket(const ClientPacket& packet) {
 }
 
 bool NetworkClient::receiveNewPacket() {
-	return socket.receive(nextPacket, serverAddress, serverPort) == sf::Socket::Done;
+	sf::IpAddress ipAddress;
+	unsigned short port;
+	return socket.receive(nextPacket, ipAddress, port) == sf::Socket::Done;
 }
 
 ServerPacketWrapper NetworkClient::getRecentPacket() {

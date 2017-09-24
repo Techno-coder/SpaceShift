@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics/Text.hpp>
+#include <functional>
 
 typedef std::function<void()> ButtonCallback;
 

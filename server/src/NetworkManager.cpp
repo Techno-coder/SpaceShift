@@ -20,6 +20,7 @@ void NetworkManager::handlePacket(sf::Packet& packet, const sf::IpAddress& addre
 	PlayerID playerID = playerIPs.get(address);
 	playerData[playerID].resetTimeSinceLastPacket();
 
+	if (packetWrapper.type == ClientPacketWrapper::Type::CHECK_ALIVE_RESPONSE) return;
 	if (packetWrapper.type == ClientPacketWrapper::Type::DISCONNECT) return handleDisconnect(playerID, packetWrapper);
 	for (auto& handler : packetHandlers) handler.get().handlePacket(packetWrapper, playerID);
 }

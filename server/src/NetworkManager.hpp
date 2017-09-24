@@ -7,6 +7,7 @@
 
 #include <SFML/Network/IpAddress.hpp>
 #include <map>
+#include <memory>
 
 class ServerPacket;
 
