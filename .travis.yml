@@ -16,11 +16,10 @@ matrix:
   include:
     # Regular linux build
     - os: linux
-      compiler: clang++
+      compiler: g++
       addons:
         apt:
           packages:
-            - libc++-dev
             - libglew-dev
             - libsndfile1-dev
             - libopenal-dev
