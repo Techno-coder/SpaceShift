@@ -23,6 +23,7 @@ class TestState : public State {
 
 	sf::Clock networkClock;
 	sf::Time currentTime = sf::Time::Zero;
+	bool isInFocus = false;
 
 	std::map<PlayerID, sf::RectangleShape> multiplayerSprites;
 	void handleKeyboardInput();

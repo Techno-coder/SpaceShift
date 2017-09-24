@@ -18,6 +18,12 @@ void TestState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
 		case sf::Event::Closed:
 			networkClient.closeConnection();
 			break;
+		case sf::Event::GainedFocus:
+			isInFocus = true;
+			break;
+		case sf::Event::LostFocus:
+			isInFocus = false;
+			break;
 		case sf::Event::KeyPressed:
 			break;
 		default:
@@ -117,6 +123,7 @@ void TestState::onEnter() {
 }
 
 void TestState::handleKeyboardInput() {
+	if (!isInFocus) return;
 	constexpr int moveSpeed = 3;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		player.move(0, -moveSpeed);
