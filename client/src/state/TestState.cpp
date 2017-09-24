@@ -11,6 +11,7 @@
 #include <packets/client/AuthenticationRequest.hpp>
 #include <packets/server/AuthenticationResponse.hpp>
 #include <packets/server/PlayerPositionsUpdate.hpp>
+#include <packets/client/CheckAliveResponse.hpp>
 
 void TestState::handleEvent(sf::Event& event, sf::RenderTarget& target) {
 	switch (event.type) {
@@ -62,8 +63,8 @@ void TestState::update() {
 			}
 			case Type::CHECK_ALIVE_REQUEST: {
 				printf("CHECK ALIVE REQUEST RECEIVED\n");
-//				CheckAliveResponsePacket responsePacket;
-//				networkClient.sendPacket(responsePacket);
+				CheckAliveResponsePacket responsePacket;
+				networkClient.sendPacket(responsePacket);
 				break;
 			}
 			default:

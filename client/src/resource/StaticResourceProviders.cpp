@@ -58,9 +58,9 @@ void loadFonts() {
 }
 
 void loadAllDefaultResources() {
-	loadTextures();
 	std::thread sounds(loadSounds);
 	std::thread fonts(loadFonts);
+	loadTextures();
 	sounds.join();
 	fonts.join();
 }

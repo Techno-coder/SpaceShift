@@ -4,6 +4,7 @@
 
 #include <SFML/Network/UdpSocket.hpp>
 #include <SFML/System/Clock.hpp>
+#include <mutex>
 #include <thread>
 
 std::mutex networkManagerMutex;

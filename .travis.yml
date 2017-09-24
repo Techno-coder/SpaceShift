@@ -33,5 +33,5 @@ matrix:
       script:
         - mkdir build
         - cd build
-        - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -stdlib=libc++" ..
+        - cmake -DCMAKE_BUILD_TYPE=Release ..
         - make
