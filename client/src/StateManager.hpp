@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stack>
+#include <memory>
 
 namespace sf {
 	class RenderTarget;

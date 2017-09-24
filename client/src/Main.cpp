@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
+#include <memory>
 
 const int DRAW_RATE_LIMIT = 60;
 const int UPDATE_RATE = 60;
