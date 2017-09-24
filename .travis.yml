@@ -16,10 +16,11 @@ matrix:
   include:
     # Regular linux build
     - os: linux
-      compiler: g++
+      compiler: clang++
       addons:
         apt:
           packages:
+            - libstdc++6
             - libglew-dev
             - libsndfile1-dev
             - libopenal-dev
@@ -32,5 +33,5 @@ matrix:
       script:
         - mkdir build
         - cd build
-        - cmake -DCMAKE_BUILD_TYPE=Release ..
+        - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -stdlib=libstdc++" ..
         - make
