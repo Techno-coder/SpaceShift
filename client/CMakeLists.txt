@@ -32,4 +32,14 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${SHARED_FILES})
 
 target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
 
-file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
+if(APPLE)
+	set_target_properties(${PROJECT_NAME} PROPERTIES MACOSX_BUNDLE TRUE
+			MACOSX_FRAMEWORK_IDENTIFIER me.techno_coder.SpaceShift)
+	set(BUNDLE_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.app)
+	file(COPY Resources DESTINATION ${BUNDLE_PATH}/Contents/)
+	install(CODE "include(BundleUtilities)
+		fixup_bundle(${BUNDLE_PATH} \"\" \"\")
+	")
+else()
+	file(COPY Resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Resources/)
+endif()
