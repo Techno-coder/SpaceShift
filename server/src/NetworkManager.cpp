@@ -8,16 +8,16 @@
 
 #include <SFML/Network/UdpSocket.hpp>
 
-void NetworkManager::handlePacket(sf::Packet& packet, const sf::IpAddress& address) {
+void NetworkManager::handlePacket(sf::Packet& packet, const PlayerIdentifier& identifier) {
 	static const auto handshakeRequestSize = HandshakeRequestPacket().generatePacket().getDataSize();
-	if (packet.getDataSize() == handshakeRequestSize) return handleHandshake(packet, address);
-	if (!playerIPs.exists(address) && !waitingForAuthentication(address)) return;
+	if (packet.getDataSize() == handshakeRequestSize) return handleHandshake(packet, identifier);
+	if (!playerIPs.exists(identifier) && !waitingForAuthentication(identifier)) return;
 
 	ClientPacketWrapper packetWrapper;
 	packetWrapper.parsePacket(packet);
-	if (waitingForAuthentication(address)) return authenticate(packetWrapper, address);
+	if (waitingForAuthentication(identifier)) return authenticate(packetWrapper, identifier);
 
-	PlayerID playerID = playerIPs.get(address);
+	PlayerID playerID = playerIPs.get(identifier);
 	playerData[playerID].resetTimeSinceLastPacket();
 
 	if (packetWrapper.type == ClientPacketWrapper::Type::CHECK_ALIVE_RESPONSE) return;
@@ -25,8 +25,8 @@ void NetworkManager::handlePacket(sf::Packet& packet, const sf::IpAddress& addre
 	for (auto& handler : packetHandlers) handler.get().handlePacket(packetWrapper, playerID);
 }
 
-void NetworkManager::handleHandshake(sf::Packet& packet, sf::IpAddress address) {
-	notAuthenticated.erase(address);
+void NetworkManager::handleHandshake(sf::Packet& packet, PlayerIdentifier identifier) {
+	notAuthenticated.erase(identifier);
 
 	HandshakeRequestPacket handshakeRequestPacket;
 	handshakeRequestPacket.parsePacket(packet);
@@ -34,33 +34,29 @@ void NetworkManager::handleHandshake(sf::Packet& packet, sf::IpAddress address) 
 	HandshakeResponsePacket responsePacket;
 	if (handshakeRequestPacket.protocolVersion == 0) {
 		responsePacket.response = HandshakeResponsePacket::Response::SUCCESSFUL;
-		notAuthenticated[address] = sf::Time::Zero;
+		notAuthenticated[identifier] = sf::Time::Zero;
 	} else {
 		responsePacket.response = HandshakeResponsePacket::Response::CLIENT_OUTDATED;
 	}
-	sendPacket(responsePacket.generatePacket(), address);
+	sendPacket(responsePacket.generatePacket(), identifier);
 }
 
-void NetworkManager::sendPacket(sf::Packet packet, const sf::IpAddress& address) {
-#ifdef NDEBUG
-	socket->send(packet, address, SERVER_PORT);
-#else
-	socket->send(packet, address, SERVER_PORT - 1);
-#endif
+void NetworkManager::sendPacket(sf::Packet packet, const PlayerIdentifier& identifier) {
+	socket->send(packet, identifier.first, identifier.second);
 }
 
-void NetworkManager::authenticate(ClientPacketWrapper& packet, sf::IpAddress address) {
+void NetworkManager::authenticate(ClientPacketWrapper& packet, PlayerIdentifier identifier) {
 	if (packet.type != ClientPacketWrapper::Type::AUTHENTICATION_REQUEST) return;
 	AuthenticationRequestPacket requestPacket;
 	requestPacket.parsePacket(packet.internal);
 
 	// TODO proper authentication with token
-	notAuthenticated.erase(address);
+	notAuthenticated.erase(identifier);
 	PlayerID totallyLegitPlayerID;
 	do {
 		totallyLegitPlayerID = static_cast<PlayerID>(rand());
 	} while (playerIPs.exists(totallyLegitPlayerID));
-	playerIPs.add(address, totallyLegitPlayerID); // TODO Proper player ids l m a o
+	playerIPs.add(identifier, totallyLegitPlayerID); // TODO Proper player ids l m a o
 	AuthenticationResponsePacket responsePacket;
 	responsePacket.response = AuthenticationResponsePacket::Response::SUCCESSFUL;
 	sendPacket(responsePacket, totallyLegitPlayerID);
@@ -106,8 +102,8 @@ void NetworkManager::sendPacket(const ServerPacket& packet, const PlayerID& play
 	sendPacket(packetWrapper.generatePacket(), playerIPs.get(playerID));
 }
 
-bool NetworkManager::waitingForAuthentication(sf::IpAddress address) {
-	return notAuthenticated.count(address) > 0;
+bool NetworkManager::waitingForAuthentication(const PlayerIdentifier& identifier) {
+	return notAuthenticated.count(identifier) > 0;
 }
 
 void NetworkManager::registerPacketHandler(PacketHandler& packetHandler) {

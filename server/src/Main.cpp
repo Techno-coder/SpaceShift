@@ -23,7 +23,7 @@ void socketListen(sf::UdpSocket& socket, NetworkManager& networkManager) {
 	sf::Packet packet;
 	while (socket.receive(packet, ipAddress, port) == sf::Socket::Done) {
 		std::lock_guard<std::mutex> guard(networkManagerMutex);
-		networkManager.handlePacket(packet, ipAddress);
+		networkManager.handlePacket(packet, {ipAddress, port});
 	}
 }
 

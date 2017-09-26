@@ -9,7 +9,7 @@
 bool NetworkClient::openConnection(sf::IpAddress address, unsigned short port) {
 	serverAddress = address;
 	serverPort = port;
-	socket.bind(port);
+	socket.bind(sf::Socket::AnyPort);
 
 	HandshakeRequestPacket handshakeRequestPacket;
 	if (sendPacket(handshakeRequestPacket.generatePacket()) != sf::Socket::Done) return false;
@@ -37,11 +37,7 @@ void NetworkClient::closeConnection() {
 }
 
 sf::Socket::Status NetworkClient::sendPacket(sf::Packet packet) {
-#ifdef NDEBUG
 	return socket.send(packet, serverAddress, serverPort);
-#else
-	return socket.send(packet, serverAddress, 54001);
-#endif
 }
 
 sf::Socket::Status NetworkClient::sendPacket(const ClientPacket& packet) {

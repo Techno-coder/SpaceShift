@@ -2,13 +2,12 @@
 
 #include <SFML/Config.hpp>
 #include <SFML/System/Time.hpp>
+#include <SFML/Network/IpAddress.hpp>
 
 typedef sf::Uint16 GameID;
-#ifdef NDEBUG
+typedef std::pair<sf::IpAddress, unsigned short> PlayerIdentifier;
 constexpr unsigned short SERVER_PORT = 54000;
-#else
-constexpr unsigned short SERVER_PORT = 54001;
-#endif
+
 const sf::Time TICK_SPEED = sf::seconds(1.0f / 20.0f);
 
 const sf::Time AUTHENTICATION_TIMEOUT = sf::seconds(5.0f);
