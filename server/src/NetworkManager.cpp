@@ -28,6 +28,7 @@ void NetworkManager::handlePacket(sf::Packet& packet, const PlayerIdentifier& id
 }
 
 void NetworkManager::handleHandshake(sf::Packet& packet, PlayerIdentifier identifier) {
+	//TODO consider disconnecting the player before handshaking
 	notAuthenticated.erase(identifier);
 
 	HandshakeRequestPacket handshakeRequestPacket;

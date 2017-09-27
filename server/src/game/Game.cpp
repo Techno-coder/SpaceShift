@@ -3,11 +3,12 @@
 #include "../PacketSender.hpp"
 #include "../generator/SquareGenerator.hpp"
 
+#include <utility/Serializer.hpp>
 #include <packets/server/PlayerPositionsUpdate.hpp>
 #include <packets/ClientPacketWrapper.hpp>
 #include <packets/client/PlayerMoveRequest.hpp>
 #include <packets/server/MapChangeEvent.hpp>
-#include <utility/Serializer.hpp>
+#include <packets/server/PlayerDisconnectNotify.hpp>
 
 void Game::onTick() {
 	//TODO
@@ -65,6 +66,9 @@ void Game::joinPlayer(PlayerID playerID) {
 
 void Game::removePlayer(PlayerID playerID) {
 	joinedPlayers.erase(playerID);
+	PlayerDisconnectNotifyPacket disconnectNotifyPacket;
+	disconnectNotifyPacket.playerID = playerID;
+	sendGlobalPacket(disconnectNotifyPacket);
 }
 
 unsigned long Game::getNumberOfJoinedPlayers() const {
