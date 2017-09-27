@@ -1,12 +1,16 @@
 #pragma once
 
 #include "Game.hpp"
-#include "../Constants.hpp"
 #include "../PacketHandler.hpp"
 
+#include <SFML/System/Time.hpp>
 #include <map>
 
 class PacketSender;
+
+typedef sf::Uint16 GameID;
+const sf::Time TIME_BEFORE_GAME_START = sf::seconds(30.0f);
+constexpr unsigned long MAXIMUM_PLAYERS_PER_GAME = 8;
 
 class GameManager : public PacketHandler {
 	struct LobbyData {

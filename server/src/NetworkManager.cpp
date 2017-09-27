@@ -1,5 +1,7 @@
 #include "NetworkManager.hpp"
-#include "game/GamesManager.hpp"
+
+#include "PacketHandler.hpp"
+#include "Constants.hpp"
 #include <packets/HandshakeRequest.hpp>
 #include <packets/HandshakeResponse.hpp>
 #include <packets/server/CheckAliveRequest.hpp>

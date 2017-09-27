@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Constants.hpp"
 #include "PacketSender.hpp"
 #include <utility/DoubleMap.hpp>
 #include <packets/Packet.hpp>
@@ -15,7 +14,13 @@ class ClientPacketWrapper;
 
 class PacketHandler;
 
+typedef std::pair<sf::IpAddress, unsigned short> PlayerIdentifier;
+
 class NetworkManager : public PacketSender {
+	const sf::Time AUTHENTICATION_TIMEOUT = sf::seconds(5.0f);
+	const sf::Time KEEP_ALIVE_TIMEOUT = sf::seconds(10.0f);
+	const sf::Time DISCONNECT_TIMEOUT = sf::seconds(20.0f);
+
 	struct PlayerData {
 		sf::Time sinceLastPacket = sf::Time::Zero;
 		bool keepAlivePacketSent = false;
